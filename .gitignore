@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# local env
+.env
+.env*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# local/editor artifacts
+.DS_Store
+Thumbs.db
+.playwright-cli/
+output/
+tmp/
