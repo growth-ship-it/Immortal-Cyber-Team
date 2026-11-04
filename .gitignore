@@ -21,3 +21,9 @@ Thumbs.db
 .playwright-cli/
 output/
 tmp/
+# TypeScript build cache
+*.tsbuildinfo
+
+# Environment files
+.env*
+!.env.example

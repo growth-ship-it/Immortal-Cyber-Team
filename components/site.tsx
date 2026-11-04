@@ -30,7 +30,7 @@ export const specialists: Record<string, any> = {
   "security-engineer": { name: "LINK", role: "Security Engineer", key: "link", accent: "#6ee7b7", intro: "Link is your Security Engineer. He connects the Immortals to your infrastructure, reviews configurations and automates remediation so nothing slips through the cracks.", briefing: "Daily Security Engineer Briefing", capabilities: ["Daily Security Engineer Briefing", "Discover Assets", "Deploy Endpoint Agents", "Integrate Security Solutions", "Cloud Configuration Review", "Identity Configuration Review", "Harden Systems", "Automate Remediation", "Manage Security Tools", "Engineering Reports"] },
 };
 
-function Header() {
+export function Header() {
   const [open, setOpen] = useState(false);
   const [openDrop, setOpenDrop] = useState<"immortals" | "company" | null>(null);
   const path = usePathname();
@@ -48,7 +48,7 @@ function Header() {
     <button className={open ? "menu open" : "menu"} onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}><span aria-hidden>{open ? "CLOSE" : "MENU"}</span><i/><i/></button>
     <nav className={open ? "nav open" : "nav"}>
       <div className={openDrop === "immortals" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => setOpenDrop("immortals")} onMouseLeave={closeMenus}>
-        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "immortals"} onClick={() => toggleDrop("immortals")}>Immortals <span aria-hidden>⌄</span></button>
+        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "immortals"} onClick={() => toggleDrop("immortals")}>Immortals <span className="navChevron" aria-hidden /></button>
         <div className="dropPanel immortalMenu" role="menu">
           <div className="navCardRow">
             {Object.entries(specialists).map(([slug, item]) => <Link key={slug} className="navSpecialistCard" href={`/${slug}`} role="menuitem" onClick={closeMenus}>
@@ -61,7 +61,7 @@ function Header() {
       <Link className={path === "/training" ? "active" : ""} href="/training">Training</Link>
       <Link className={path === "/pricing" ? "active" : ""} href="/pricing">Pricing</Link>
       <div className={openDrop === "company" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => setOpenDrop("company")} onMouseLeave={closeMenus}>
-        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "company"} onClick={() => toggleDrop("company")}>Company <span aria-hidden>⌄</span></button>
+        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "company"} onClick={() => toggleDrop("company")}>Company <span className="navChevron" aria-hidden /></button>
         <div className="dropPanel companyMenu" role="menu">
           <div className="companyMega">
             <div className="companyFeature"><Image src="/images/nav/company-free-account.png" alt="" width={1200} height={1200}/><a href={consoleUrl} className="companyCreate">Create a Free Account</a></div>
@@ -84,7 +84,7 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
 
 function GlitchCorners() { return <div className="glitch" aria-hidden><i/><i/><i/><i/><b/><b/><b/><b/></div>; }
 
-function Footer() { return <footer><div className="footerTop"><div><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={175} height={58}/><p>Imagine limitless resources, skills and capabilities with Immortal Cyber Teams.</p></div><div><h4>Immortals</h4>{Object.entries(specialists).map(([s,d])=><Link key={s} href={`/${s}`}>{d.role}</Link>)}</div><div><h4>Company</h4><Link href="/pricing">Pricing</Link><Link href="/about-us">About Us</Link><Link href="/partners">Partners</Link><Link href="/terms-of-use">Terms of Use</Link><Link href="/privacy-policy">Privacy Policy</Link></div></div><div className="copyright">© 2026 Immortal Cyber Teams. All rights reserved.<span>✕　in　f　▶</span></div></footer> }
+export function Footer() { return <footer><div className="footerTop"><div><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={175} height={58}/><p>Imagine limitless resources, skills and capabilities with Immortal Cyber Teams.</p></div><div><h4>Immortals</h4>{Object.entries(specialists).map(([s,d])=><Link key={s} href={`/${s}`}>{d.role}</Link>)}</div><div><h4>Company</h4><Link href="/pricing">Pricing</Link><Link href="/about-us">About Us</Link><Link href="/partners">Partners</Link><Link href="/terms-of-use">Terms of Use</Link><Link href="/privacy-policy">Privacy Policy</Link></div></div><div className="copyright">© 2026 Immortal Cyber Teams. All rights reserved.<span>✕　in　f　▶</span></div></footer> }
 
 function FinalCTA({ image="/images/team.webp" }: {image?: string}) { return <section className="finalCta"><div><Reveal><h2>Imagine Limitless Cyber Defence with the Immortal Cyber Team on Your Side.</h2><a className="btn lightBtn" href={consoleUrl}>Create Free Account</a></Reveal></div><Image src={image} alt="Immortal Cyber Team" fill sizes="100vw"/></section> }
 
@@ -174,6 +174,85 @@ function GhostPage({data}:{data:any}) {
 }
 
 export function TrainingPage(){return <main><Header/><section className="trainingHero"><Image src="/images/training.jpg" alt="Immortal Training" fill priority sizes="100vw"/><motion.div initial={{opacity:0,scale:.9}} animate={{opacity:1,scale:1}} transition={{duration:1}}><Image src="/images/logo.svg" alt="Immortal" width={520} height={160}/><h1>TRAINING</h1></motion.div></section><section className="whiteStatement"><GlitchCorners/><Reveal><h2>BECOME A CERTIFIED IMMORTAL.<br/><span>MASTER REAL-WORLD CYBERSECURITY.</span></h2></Reveal></section><section className="trainingBody"><Reveal><small>LEARN FROM THE TEAM</small><h2>Six specialists.<br/>Limitless potential.</h2><p>Progress through interactive missions, build practical skills and earn specialist medals. Every scenario is based on the work modern defenders perform every day.</p></Reveal><div className="trainingGrid">{cards.map(([slug,d])=><Link href={`/${slug}`} key={slug} style={{"--accent":d.accent} as any}><Image src={`/images/${d.key}.png`} alt={d.name} fill sizes="33vw"/><div><b>{d.name}</b><span>{d.role}</span></div></Link>)}</div></section><FinalCTA/><Footer/></main>}
+
+const academyCampaigns = [
+  ["Intelligence Specialist", "ghost", "/intelligence-specialist"],
+  ["Penetration Tester", "spectre", "/penetration-tester"],
+  ["Operations Specialist", "pulse", "/security-operations"],
+  ["Incident Responder", "hex", "/incident-responder"],
+  ["GRC Specialist", "pandora", "/grc-specialist"],
+  ["Security Engineer", "link", "/security-engineer"],
+] as const;
+
+const executiveMissions = [
+  {
+    title: "Cybersecurity Burnout: Recognizing and Resolving the Hidden Crisis",
+    description: "Ghost reveals how to recognize burnout, understand why it happens, and take practical steps that create lasting change.",
+    time: "12m", image: "burnout.png",
+    href: "/mission/cybersecurity-burnout-recognizing-and-resolving-the-hidden-crisis",
+  },
+  {
+    title: "Cybersecurity Staff Augmentation: Why Your Next Teammate Might Not Be Human",
+    description: "Rethink staff augmentation and discover how human teams can work alongside always-on AI specialists.",
+    time: "15m", image: "staff.png",
+    href: "https://www.immortals.co/mission/cybersecurity-staff-augmentation-why-your-next-teammate-might-not-be-human",
+  },
+  {
+    title: "AI in Cybersecurity: How Forward-Thinking Teams Get Real Results",
+    description: "Cut through the hype and see where AI makes a measurable difference for modern security teams.",
+    time: "15m", image: "ai.png",
+    href: "https://www.immortals.co/mission/ai-in-cybersecurity-how-forward-thinking-teams-get-real-results",
+  },
+] as const;
+
+const latestMissions = [
+  { title: "Humans + AI — Building the Next-Gen Cybersecurity Team", description: "Clear the fog around AI and build confidence in how it behaves when the stakes are high.", time: "8m", image: "skills.png" },
+  { title: "From Reactive to Predictive: Elevating Cyber Strategy with AI", description: "Pandora shows how predictive GRC helps teams move from delayed response to forward-looking defense.", time: "15m", image: "ai.png" },
+  { title: "The Cybersecurity Skills Shortage: Navigating the Talent Crisis", description: "Explore the internal threat created by the global skills gap and the practical routes through it.", time: "12m", image: "skills.png" },
+  { title: "Meet Ghost: Inside the Mind of an Immortal Cybersecurity Assistant", description: "Step inside Ghost’s origin story and the intelligence practice that powers an immortal cyber team.", time: "10m", image: "burnout.png" },
+] as const;
+
+function MissionCard({ mission, latest = false }: { mission: { readonly title:string; readonly description:string; readonly time:string; readonly image:string; readonly href?:string }, latest?:boolean }) {
+  const external = mission.href?.startsWith("http");
+  return <motion.a className={latest ? "academyMission academyMissionLatest" : "academyMission"} href={mission.href || "#academy-latest"} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} whileHover={{y:-8}} transition={{duration:.22}}>
+    <div className="academyMissionImage"><Image src={`/images/academy/${mission.image}`} alt="" fill sizes={latest ? "(max-width: 700px) 100vw, 50vw" : "(max-width: 900px) 100vw, 33vw"}/></div>
+    <div className="academyMissionCopy"><h3>{mission.title}</h3><p>{mission.description}</p></div>
+    <div className="academyMissionMeta"><span>Beginner</span><span>{mission.time}</span><b aria-hidden><i/></b></div>
+  </motion.a>;
+}
+
+export function AcademyPage() {
+  return <main className="academyPage">
+    <Header/>
+    <section className="academyHero">
+      <video autoPlay muted loop playsInline poster="/images/academy/hero.jpg">
+        <source src="/images/academy/immortal-academy-hero.mp4" type="video/mp4"/>
+      </video>
+      <div className="academyHeroShade"/>
+      <motion.div className="academyHeroMark" initial={{opacity:0,scale:.9}} animate={{opacity:1,scale:1}} transition={{duration:1.1,ease:[.2,.8,.2,1]}}>
+        <Image src="/images/academy/academy-logo.svg" alt="Immortal Academy" width={760} height={210} priority/>
+      </motion.div>
+      <a className="academyScroll" href="#academy-campaigns">Explore campaigns <span>↓</span></a>
+    </section>
+
+    <section id="academy-campaigns" className="academyCampaigns">
+      <Reveal><h1>Specialist Campaigns</h1><p>Explore structured, role-based learning paths across core cybersecurity domains — from intelligence and pentesting to SecOps, GRC, and incident response. Each campaign is hands-on, guided, and built for real impact.</p></Reveal>
+      <div className="academyCampaignGrid">{academyCampaigns.map(([label,key,href],index)=><Reveal key={key} delay={index*.05}><Link href={href} className="academyCampaign"><div><Image src={`/images/academy/${key}.png`} alt="" fill sizes="(max-width: 700px) 50vw, 16vw"/></div><span>{label}</span></Link></Reveal>)}</div>
+    </section>
+
+    <section id="academy-executive" className="academyExecutive">
+      <div className="academyCut" aria-hidden/>
+      <Reveal><h2>Executive Campaign</h2><small>N/A</small></Reveal>
+      <div className="academyMissionGrid">{executiveMissions.map((mission,index)=><Reveal key={mission.title} delay={index*.08}><MissionCard mission={mission}/></Reveal>)}</div>
+    </section>
+
+    <section id="academy-latest" className="academyLatest">
+      <Reveal><h2>Latest Missions</h2></Reveal>
+      <div className="academyLatestGrid">{latestMissions.map((mission,index)=><Reveal key={mission.title} delay={(index%2)*.08}><MissionCard mission={mission} latest/></Reveal>)}</div>
+    </section>
+    <Footer/>
+  </main>;
+}
 
 const plans=[["Free Tier","$0","-"],["SMB Tier","$3k","1 - 50"],["Medium Business Tier","$9k","50 - 200"],["Large Business Tier","$27k","200 - 700"],["Enterprise Tier","Custom","700 - 10,000+"]];
 export function PricingPage(){const[annual,setAnnual]=useState(false);return <main><Header/><section className="pricing"><Reveal><small>Pricing</small><h1>Get started on the Free Tier</h1><p>Experience the power of an AI-powered cybersecurity team with the Free Tier—no credit card required—featuring full access to the entire Immortal Cyber Team for 24x7 protection.</p></Reveal><Reveal className="planHead"><h2>Immortal Plans</h2><span>Annual Payment 12.5% discount</span><button onClick={()=>setAnnual(!annual)}><i className={!annual?"selected":""}>Monthly</i><i className={annual?"selected":""}>Annual</i><b>Save 12.5%</b></button></Reveal><div className="planTable">{plans.map((p,i)=><motion.div key={p[0]} className={i===1?"featured":""} whileHover={{y:-8}}><h3>{p[0]}</h3><strong>{annual&&i>0&&i<4?`$${Math.round(parseInt(p[1].slice(1))*0.875)}k`:p[1]}<small>{i<4?"/month":""}</small></strong><a href={consoleUrl}>{i<3?"Sign Up":"Let's Chat"}</a><dl><dt>Employee Count</dt><dd>{p[2]}</dd><dt>Immortal Cyber Team</dt><dd>All 6 specialists</dd><dt>24/7 Monitoring</dt><dd>Included</dd></dl></motion.div>)}</div></section><FinalCTA/><Footer/></main>}
