@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -46,7 +46,7 @@ function GhostRecoveryCard({item,sectionProgress,axis,index}:{item:string[];sect
 export const specialists: Record<string, any> = {
   "intelligence-specialist": { name: "GHOST", role: "Intelligence Specialist", key: "ghost", accent: "#e554ff", intro: "Ghost is your Intelligence Specialist and founder of the Immortal Cyber Team. Rising from Baltimore's streets, she evolved from hacker to intelligence visionary.", briefing: "Join the Daily Intelligence Briefing", capabilities: ["Daily Intelligence Briefing", "Monitor Global Threat Actor Activities", "Dark Web Monitoring", "Monitor Third-Party Supplier Exposures", "Leaked Password Monitoring", "Stealer Malware Monitoring", "Secure Breached Accounts", "Track the Latest Vulnerabilities", "Track the Latest Exploits", "Cyber Threat Intelligence Feeds", "Dumpsite Data Leak Monitoring", "Create Intelligence Reports"] },
   "penetration-tester": { name: "SPECTRE", role: "Penetration Tester", key: "spectre", accent: "#cef069", intro: "Spectre is your elite Penetration Tester. He maps every exposed system, finds vulnerabilities, exploits weaknesses, and reports the path an attacker would take.", briefing: "Daily Penetration Test Briefing", capabilities: ["Daily Penetration Test Briefing", "Manage Penetration Tests", "External Penetration Testing", "Internal Penetration Testing", "Web Application Testing", "Cloud Security Testing", "Exploit Vulnerabilities", "Password Cracking", "Lateral Movement", "Create Penetration Test Reports"] },
-  "security-operations": { name: "PULSE", role: "Security Operations Specialist", key: "pulse", accent: "#fff06a", intro: "Pulse is your Security Operations Specialist, continuously monitoring identities, endpoints, cloud systems and network signals to stop attackers the moment they surface.", briefing: "Daily Security Operations Briefing", capabilities: ["Daily Security Operations Briefing", "Endpoint Detection & Response", "Cloud Security Monitoring", "Identity Threat Detection", "Firewall and VPN Monitoring", "Security Event Triage", "Threat Hunting", "Malware Detection", "Escalate Anomalies", "Create Operations Reports"] },
+  "security-operations": { name: "PULSE", role: "Security Operations Specialist", key: "pulse", accent: "#fff5a3", intro: "Pulse is your Security Operations Specialist, continuously monitoring identities, endpoints, cloud systems and network signals to stop attackers the moment they surface.", briefing: "Daily Security Operations Briefing", capabilities: ["Daily Security Operations Briefing", "Endpoint Detection & Response", "Cloud Security Monitoring", "Identity Threat Detection", "Firewall and VPN Monitoring", "Security Event Triage", "Threat Hunting", "Malware Detection", "Escalate Anomalies", "Create Operations Reports"] },
   "incident-responder": { name: "HEX", role: "Incident Responder", key: "hex", accent: "#a99af4", intro: "Hex is your Incident Responder. He collects forensic evidence, analyses memory and logs, traces malware indicators and neutralises persistence before threats can spread.", briefing: "Daily Incident Response Briefing", capabilities: ["Daily Incident Response Briefing", "Evidence Collection and Analysis", "Memory Forensics", "Malware Analysis", "Log Investigation", "Network and Browser Analysis", "Compromise Assessment", "Contain Threats", "Eradicate Persistence", "Incident Response Reports"] },
   "grc-specialist": { name: "PANDORA", role: "GRC Specialist", key: "pandora", accent: "#64c8e8", intro: "Pandora is your GRC Specialist. She turns complex regulations into clear action, validates controls, assesses risk and automates evidence and reporting.", briefing: "Daily GRC Briefing", capabilities: ["Security Standard Gap Analysis", "Security Control Validation", "Third-Party Risk Assessments", "Compliance Monitoring", "Risk Register Management", "Policy Development", "Framework Mapping", "Audit Evidence Collection", "Executive Reporting", "Automated Documentation"] },
   "security-engineer": { name: "LINK", role: "Security Engineer", key: "link", accent: "#6ee7b7", intro: "Link is your Security Engineer. He connects the Immortals to your infrastructure, reviews configurations and automates remediation so nothing slips through the cracks.", briefing: "Daily Security Engineer Briefing", capabilities: ["Daily Security Engineer Briefing", "Discover Assets", "Deploy Endpoint Agents", "Integrate Security Solutions", "Cloud Configuration Review", "Identity Configuration Review", "Harden Systems", "Automate Remediation", "Manage Security Tools", "Engineering Reports"] },
@@ -143,6 +143,11 @@ const ghostAreas = [
   { id:"supply", number:"04", label:"Supply Chain Intelligence", kicker:"Monitor the third parties attackers may use to reach you.", summary:"Understand supplier, partner and third-party exposures before a breach becomes your problem.", actions:["Analyse our latest supply chain findings.","Show suppliers with leaked passwords or stealer infections.","Generate supplier remediation reports."], outputs:["Supply chain risk summaries","Third-party breach views","Credential exposure reports","Executive summaries"] },
 ];
 
+function getScrollScrubTime(progress:number,duration:number) {
+  const scrubProgress = Math.min(1,Math.max(0,(progress-.06)/.9));
+  return scrubProgress * Math.max(0,duration-.04);
+}
+
 function GhostPage({data}:{data:any}) {
   const [infoRailTravel, setInfoRailTravel] = useState(0);
   const [infoRailAxis, setInfoRailAxis] = useState<"x" | "y">("y");
@@ -150,6 +155,8 @@ function GhostPage({data}:{data:any}) {
   const statementRef = useRef<HTMLElement | null>(null);
   const infoRef = useRef<HTMLElement | null>(null);
   const therapyRef = useRef<HTMLElement | null>(null);
+  const therapyVideoRef = useRef<HTMLVideoElement | null>(null);
+  const therapyVideoFrameRef = useRef<number | null>(null);
   const perfectRef = useRef<HTMLElement | null>(null);
   const infoRailRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress: statementProgress } = useScroll({ target: statementRef, offset: ["start start", "end start"] });
@@ -177,11 +184,25 @@ function GhostPage({data}:{data:any}) {
   const therapySecondY = useTransform(therapyProgress, [.32, .52, .76, .92], ["500%", "0%", "0%", "-260%"]);
   const therapySecondOpacity = useTransform(therapyProgress, [.32, .5, .78, .92], [0, 1, 1, 0]);
   const therapyVideoScale = useTransform(therapyProgress, [0, 1], [1.06, 1]);
-  const perfectBgY = useTransform(perfectProgress, [0, 1], ["20%", "-20%"]);
+  const perfectBgY = useTransform(perfectProgress, [0, 1], ["3%", "-3%"]);
   const perfectWordScale = useTransform(perfectProgress, [0, .4], [1, perfectCompact ? 1 : .41]);
   const perfectLeftX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "-72vw" : "-30.3vw"]);
   const perfectRightX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "72vw" : "32.3vw"]);
   const perfectCardY = useTransform(perfectProgress, [0, .12, .62, 1], ["200%", "200%", perfectCompact ? "-45%" : "7%", perfectCompact ? "-45%" : "7%"]);
+  useMotionValueEvent(therapyProgress,"change",(progress) => {
+    const video = therapyVideoRef.current;
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    if (therapyVideoFrameRef.current !== null) cancelAnimationFrame(therapyVideoFrameRef.current);
+    therapyVideoFrameRef.current = requestAnimationFrame(() => {
+      video.pause();
+      const nextTime = getScrollScrubTime(progress,video.duration);
+      if (Math.abs(video.currentTime-nextTime) > 1/60) video.currentTime = nextTime;
+      therapyVideoFrameRef.current = null;
+    });
+  });
+  useEffect(() => () => {
+    if (therapyVideoFrameRef.current !== null) cancelAnimationFrame(therapyVideoFrameRef.current);
+  }, []);
   useEffect(() => {
     const updateRailTravel = () => {
       const rail = infoRailRef.current;
@@ -239,7 +260,7 @@ function GhostPage({data}:{data:any}) {
         <div className="ghostCloneHeroCopy">
           <h1>Relieve stress<br/>at home</h1>
           <a className="btn lightBtn ghostCloneHeroAction" href={consoleUrl}>Choose Relaxation</a>
-          <a className="ghostCloneShowreel" href="#ghost-clone-signal">Discover our showreel'26</a>
+          <a className="ghostCloneShowreel" href="https://www.youtube.com/watch?v=8aQzmsR5av4" target="_blank" rel="noreferrer">WATCH GHOST IN ACTION</a>
         </div>
         <div className="ghostCloneScroll">SCROLL TO EXPLORE</div>
       </section>
@@ -274,7 +295,7 @@ function GhostPage({data}:{data:any}) {
         <div className="ghostCloneInfoIntro">
           <p>Improve security while your team keeps moving</p>
           <h2>Ghost uses live intelligence to reset risk, focus and response</h2>
-          <a className="ghostCloneInfoButton" href={consoleUrl}>Get a briefing</a>
+          <a className="btn ghostCloneBriefingButton" href={consoleUrl}>Get a briefing</a>
         </div>
         <div className="ghostCloneRecoveryHead">
           <p><span>01</span><span>/</span><span>07</span></p>
@@ -297,8 +318,12 @@ function GhostPage({data}:{data:any}) {
         </h2>
       </div>
       <div className="ghostCloneTherapyPin">
-        <motion.video className="ghostCloneTherapyVideo" style={{scale:therapyVideoScale}} autoPlay muted loop playsInline preload="auto" aria-hidden="true">
-          <source src="/videos/fitosauna-sauna-back.webm" type="video/webm"/>
+        <motion.video ref={therapyVideoRef} className="ghostCloneTherapyVideo" style={{scale:therapyVideoScale}} muted playsInline preload="auto" aria-hidden="true" onLoadedMetadata={(event) => {
+          const video = event.currentTarget;
+          video.pause();
+          video.currentTime = getScrollScrubTime(therapyProgress.get(),video.duration);
+        }}>
+          <source src="/videos/ghost-secure-breached-accounts.webm" type="video/webm"/>
         </motion.video>
         <div className="ghostCloneTherapyShade"/>
         <motion.article className="ghostCloneTherapyCallout ghostCloneTherapyCalloutLeft" style={{y:therapyFirstY,opacity:therapyFirstOpacity}}>
@@ -314,7 +339,6 @@ function GhostPage({data}:{data:any}) {
 
     <section className="ghostCloneDesigned">
       <div className="ghostCloneDesignedHead">
-        <h5>Designed for security teams</h5>
         <h5>Designed for security teams</h5>
       </div>
       <div className="ghostCloneSpecGrid">
@@ -359,7 +383,7 @@ function GhostPage({data}:{data:any}) {
     <motion.section ref={perfectRef} className="ghostClonePerfect" aria-label="Choose your perfect Ghost">
       <div className="ghostClonePerfectPin">
       <motion.div className="ghostClonePerfectBgWrap" style={{y:perfectBgY}}>
-        <Image className="ghostClonePerfectBg" src="/images/fitosauna-clone/choose-perfect-bg.jpg" alt="" fill sizes="100vw"/>
+        <Image className="ghostClonePerfectBg" src="/images/choose-perfect-specialist.png" alt="" fill sizes="100vw" unoptimized/>
       </motion.div>
       <div className="ghostClonePerfectWords" aria-hidden="true">
         <motion.div style={{x:perfectLeftX,scale:perfectWordScale}}><h2>Choose your</h2></motion.div>
@@ -367,8 +391,8 @@ function GhostPage({data}:{data:any}) {
       </div>
       <motion.div className="ghostClonePerfectCard" style={{y:perfectCardY}}>
         <h6>See how it works</h6>
-        <h3>Try Ghost risk-free for 30 days</h3>
-        <img src="/images/fitosauna-clone/risk-free-badge.svg" alt="" aria-hidden="true"/>
+        <h3>Try Ghost free for 30 days</h3>
+        <img src="/images/immortal-mm.svg" alt="" aria-hidden="true"/>
         <div className="ghostClonePerfectFeatures">
           <h5>Changed your mind? Switch the brief</h5>
           <h5>30-day intelligence guarantee</h5>
