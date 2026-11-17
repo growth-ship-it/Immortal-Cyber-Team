@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { GhostHeroVideo } from "./ghost-hero-video";
 
 const consoleUrl = "https://console.immortals.co/";
 
@@ -254,13 +255,18 @@ function GhostPage({data}:{data:any}) {
     <Header/>
     <div className="ghostCloneHeroFrame">
       <section className="ghostCloneHero" aria-label="Ghost Intelligence Specialist">
-        <div className="ghostCloneHeroMedia">
-          <Image src="/images/ghost.png" alt="Ghost, Immortal Intelligence Specialist" fill priority sizes="100vw"/>
-        </div>
+        <GhostHeroVideo/>
         <div className="ghostCloneHeroCopy">
-          <h1>Relieve stress<br/>at home</h1>
-          <a className="btn lightBtn ghostCloneHeroAction" href={consoleUrl}>Choose Relaxation</a>
-          <a className="ghostCloneShowreel" href="https://www.youtube.com/watch?v=8aQzmsR5av4" target="_blank" rel="noreferrer">WATCH GHOST IN ACTION</a>
+          <h1>GHOST</h1>
+          <p className="ghostCloneHeroRole">Intelligence Specialist</p>
+          <form className="ghostCloneHeroPrompt" action={consoleUrl} method="get">
+            <input name="prompt" type="text" placeholder="Chat with Ghost" aria-label="Chat with Ghost" />
+            <button className="ghostClonePromptMic" type="submit" aria-label="Start voice chat with Ghost">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="3" width="7" height="12" rx="3.5"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg>
+            </button>
+          </form>
+          <p className="ghostCloneHeroIntro">Ghost is the Immortal Cyber Team&apos;s Intelligence Specialist, turning live threats and exposures into clear, immediate action.</p>
+          <a className="ghostCloneShowreel" href="https://www.youtube.com/watch?v=8aQzmsR5av4" target="_blank" rel="noreferrer"><span>WATCH GHOST<br/>IN ACTION</span></a>
         </div>
         <div className="ghostCloneScroll">SCROLL TO EXPLORE</div>
       </section>
