@@ -114,6 +114,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
               draggable={false}
             />
             <p className="ghostDashboardGreeting" aria-hidden="true">Good Evening,</p>
+            <span className="ghostDashboardProfile">Profile</span>
             <div ref={slotRef} className="ghostDashboardVideoSlot" aria-hidden="true" />
           </div>
         </motion.section>
