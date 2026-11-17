@@ -148,12 +148,12 @@
 .dropPanel a:hover{background:transparent;color:#fff}
 
 /* Live Immortal mega menu structure */
-.dropPanel{position:fixed;top:72px;left:50%;width:min(1152px,calc(100vw - 48px));transform:translate(-50%,8px);padding:40px 64px;background:#070d11;border:0;border-radius:0;box-shadow:none}
+.dropPanel{position:fixed;top:72px;left:50%;width:min(1152px,calc(100vw - 48px));opacity:1;visibility:hidden;transform:translate(-50%,0);padding:40px 64px;background:#070d11;border:0;border-radius:0;box-shadow:none;transition:none}
 .navDrop:hover .dropPanel{transform:translate(-50%,0)}
 .immortalMenu{display:block}
 .navCardRow{display:flex;align-items:stretch;justify-content:space-between;gap:10px;width:100%;margin:0 auto}
-.navSpecialistCard{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;gap:13px;width:100%;padding:5px!important;border:0!important;color:#ecf0ef!important}
-.navSpecialistCard:hover{background:transparent!important}
+.navSpecialistCard{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;gap:13px;width:100%;padding:5px!important;border:0!important;border-radius:8px;color:#ecf0ef!important;transition:padding .2s ease,background-color .2s ease}
+.navSpecialistCard:hover,.navSpecialistCard:focus-visible{background:#1d252d!important;border:1px solid var(--yellow)!important;outline:0}
 .navSpecialistCopy{width:100%}
 .navSpecialistCopy b{display:block;color:#ecf0ef!important;font-size:24px;font-weight:500;line-height:31.2px;letter-spacing:normal}
 .navSpecialistCopy span{display:block;margin:0;color:#839396!important;font:400 14px/16px Arial,sans-serif}
@@ -174,7 +174,7 @@
 
 /* Live Immortal dropdown interaction and asset-ratio polish */
 .navDrop.isOpen .dropPanel{opacity:1;visibility:visible;transform:translate(-50%,0)}
-.navDrop.isOpen>button:after{transform:scaleX(1)}
+.navDrop>button:after{display:none}
 .navDrop.isOpen>button span{transform:rotate(180deg)}
 .navDrop>button span{display:inline-block;transition:transform .2s}
 .navSpecialistCard img{width:100%;height:auto;aspect-ratio:381/309;object-fit:cover;object-position:center;border-radius:8px;filter:none}
@@ -393,7 +393,6 @@
 .ghostClonePage *{font-weight:500!important}
 .ghostClonePage .header{background:#050609f0}
 .ghostClonePage>footer{position:relative;z-index:8;display:block;clear:both;min-height:100svh;background:#070d11;color:#fff}
-.ghostCloneHeroFrame{position:relative;z-index:0;height:200svh;background:#050609}
 .ghostCloneHero{position:sticky;top:0;z-index:0;min-height:100svh;display:grid;align-items:start;padding:108px var(--content-inset) 80px;overflow:hidden;background:#050609;color:#fff}
 .ghostCloneHeroMedia{position:absolute;inset:52px 0 0;z-index:0;pointer-events:none}
 .ghostCloneHeroMedia:after{content:"";position:absolute;inset:0;background:#070d114d}
@@ -403,13 +402,18 @@
 .ghostCloneHeroCopy{position:static;z-index:2;width:min(620px,78vw);display:grid;gap:0}
 .ghostCloneHeroCopy h1{position:relative;z-index:2;max-width:620px;margin:0;color:#fff;font-size:24px;font-weight:500;line-height:1;letter-spacing:.14em;white-space:nowrap}
 .ghostCloneHeroCopy .ghostCloneHeroRole{position:relative;left:auto;bottom:auto;max-width:780px;margin:14px 0 0;color:#fff;font-size:80px;font-weight:500;line-height:.9;text-transform:uppercase;letter-spacing:-.05em;text-shadow:0 14px 42px #000}
-.ghostCloneHeroPrompt{position:relative;left:auto;bottom:auto;z-index:2;width:min(400px,100%);height:60px;display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;margin-top:28px;padding:0 9px 0 15px;border:1px solid transparent;border-radius:19px;background:#18252ee8;box-shadow:0 14px 34px #0000002e;backdrop-filter:blur(10px);transition:border-color .2s,background-color .2s}
-.ghostCloneHeroPrompt input{min-width:0;height:100%;border:0;background:transparent;padding:0 8px;color:#fff;font:500 16px/1 "Saira",sans-serif;outline:0}
+.ghostCloneHeroPromptGroup{position:relative;left:auto;bottom:auto;z-index:2;width:min(400px,100%);display:grid;gap:10px;margin-top:28px}
+.ghostCloneHeroPromptGroup>label{color:#fff;font-size:16px;font-weight:500;line-height:1;letter-spacing:.01em;text-shadow:0 8px 24px #000}
+.ghostCloneHeroPrompt{position:relative;width:100%;height:60px;display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;padding:0 9px 0 15px;border:1px solid transparent;border-radius:19px;background:#18252ee8;box-shadow:0 14px 34px #0000002e;backdrop-filter:blur(10px);transition:border-color .2s,background-color .2s}
+.ghostCloneHeroPrompt input{min-width:0;height:100%;overflow:hidden;border:0;background:transparent;padding:0 8px;color:#fff;font:500 16px/1 "Saira",sans-serif;outline:0;text-overflow:ellipsis;white-space:nowrap}
 .ghostCloneHeroPrompt input::placeholder{color:#aeb9c1;opacity:1}
 .ghostCloneHeroPrompt:focus-within{border-color:var(--yellow);background:#15212aeF}
 .ghostCloneHeroPrompt button{width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:#d9e0e4;cursor:pointer;transition:background-color .2s,color .2s}
 .ghostCloneHeroPrompt button:hover{background:#ffffff10;color:var(--yellow)}
+.ghostCloneHeroPrompt button.isListening{background:var(--yellow);color:#070d11;animation:ghostMicListening .9s ease-in-out infinite}
 .ghostCloneHeroPrompt svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ghostCloneVoiceStatus{min-height:16px;margin:0 8px;color:#d5dde1;font-size:12px;line-height:16px;text-shadow:0 6px 18px #000}
+@keyframes ghostMicListening{50%{transform:scale(.92)}}
 .ghostCloneHeroCopy .ghostCloneHeroIntro{position:absolute;left:var(--content-inset);bottom:76px;z-index:2;max-width:580px;margin:0;color:#fff;font-size:24px;font-weight:500;line-height:1.55;letter-spacing:-.02em;text-shadow:0 14px 42px #000}
 .ghostCloneHeroCopy sup{font-size:.45em;top:-.55em}
 .ghostCloneShowreel{position:absolute;right:var(--content-inset);bottom:78px;z-index:2;width:284px;min-height:82px;display:inline-flex;align-items:center;justify-content:flex-start;padding:0 76px 0 86px;border:1px solid #ffffffcc;border-radius:0;color:#fff;font-size:12px;font-weight:500;line-height:1.35;text-transform:uppercase;letter-spacing:.04em;background:#ffffff0a;backdrop-filter:blur(4px);transition:border-color .22s,background-color .22s}
@@ -425,7 +429,33 @@
 @keyframes ghostCloneScrollCue{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(6px);opacity:1}}
 .ghostCloneHeroBrand{position:absolute;right:var(--content-inset);bottom:20px;top:auto;z-index:2;color:#fff;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.12em}
 
-.ghostCloneStatement{position:relative;z-index:2;height:200svh;margin-top:-100svh;background:#050609;color:#fff;border-bottom:1px solid #ffffff18}
+/* Run once on entry; keep the video crop and scroll cue's centering intact. */
+@keyframes ghostHeroEnter{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:none}
+}
+@keyframes ghostHeroFade{
+  from{opacity:0}
+  to{opacity:1}
+}
+@media(prefers-reduced-motion:no-preference){
+  .ghostCloneHeroMedia{animation:ghostHeroFade .9s ease-out backwards}
+  .ghostCloneHeroCopy>h1,
+  .ghostCloneHeroRole,
+  .ghostCloneHeroPromptGroup,
+  .ghostCloneHeroIntro,
+  .ghostCloneShowreel{animation:ghostHeroEnter .8s cubic-bezier(.16,1,.3,1) backwards}
+  .ghostCloneHeroCopy>h1{animation-delay:.12s}
+  .ghostCloneHeroRole{animation-delay:.22s}
+  .ghostCloneHeroPromptGroup{animation-delay:.4s}
+  .ghostCloneHeroIntro{animation-delay:.56s}
+  .ghostCloneShowreel{animation-delay:.68s}
+  .ghostCloneScroll{animation:ghostHeroFade .55s ease-out 1s backwards}
+  .ghostCloneHeroPromptGroup:focus-within,
+  .ghostCloneShowreel:focus-visible{animation:none}
+}
+
+.ghostCloneStatement{position:relative;z-index:2;height:200svh;background:#050609;color:#fff;border-bottom:1px solid #ffffff18}
 .ghostCloneStatementSticky{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden;background:#050609}
 .ghostCloneStatementMedia{position:absolute;inset:-9%;z-index:0;will-change:transform}
 .ghostCloneStatementMedia img{object-fit:cover;object-position:center 34%;filter:saturate(.82) brightness(.72) contrast(1.04)}
@@ -577,7 +607,8 @@
   .ghostCloneHeroCopy{width:100%}
   .ghostCloneHeroCopy h1{font-size:20px;line-height:1;letter-spacing:.12em}
   .ghostCloneHeroCopy .ghostCloneHeroRole{margin-top:12px;font-size:42px;line-height:.92;letter-spacing:-.04em}
-  .ghostCloneHeroPrompt{width:min(360px,100%);height:56px;grid-template-columns:minmax(0,1fr) 38px;margin-top:24px;padding:0 8px 0 14px;border-radius:18px}
+  .ghostCloneHeroPromptGroup{width:min(360px,100%);margin-top:24px;gap:9px}
+  .ghostCloneHeroPrompt{height:56px;grid-template-columns:minmax(0,1fr) 38px;padding:0 8px 0 14px;border-radius:18px}
   .ghostCloneHeroPrompt input{font-size:16px}
   .ghostCloneHeroPrompt button{width:34px;height:34px}
   .ghostCloneHeroCopy .ghostCloneHeroIntro{position:relative;left:auto;bottom:auto;max-width:360px;margin:18px 0 0;font-size:18px;line-height:1.55}
