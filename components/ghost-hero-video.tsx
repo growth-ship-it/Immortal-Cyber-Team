@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 // The source's 4.75–8.25s segment turns from screen-left to screen-right.
 // Its forward-facing pose is 1.5s into the prepared, all-keyframe clip.
@@ -10,13 +10,13 @@ const FRAME_TIME = 1 / 24;
 const VIDEO_SRC = "/videos/ghost-hero-scrub.mp4";
 const POSTER_SRC = "/images/ghost-hero-poster.jpg";
 
-export function GhostHeroVideo() {
+export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<HTMLElement | null> }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
-    const hero = video?.closest("section");
+    const hero = interactionRef?.current || video?.closest("section");
     if (!video || !hero) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,7 +56,7 @@ export function GhostHeroVideo() {
     }
 
     const onPointerMove = (event: PointerEvent) => {
-      if (!enabled || event.pointerType === "touch" || !Number.isFinite(video.duration)) return;
+      if (!enabled || hero.dataset.heroActive === "false" || event.pointerType === "touch" || !Number.isFinite(video.duration)) return;
       const bounds = hero.getBoundingClientRect();
       const x = Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width));
       const end = Math.max(0, video.duration - FRAME_TIME);
@@ -128,7 +128,7 @@ export function GhostHeroVideo() {
       finePointer.removeEventListener("change", configure);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, []);
+  }, [interactionRef]);
 
   return <div className="ghostCloneHeroMedia">
     <Image src={POSTER_SRC} alt="Ghost, Immortal Intelligence Specialist" fill priority unoptimized />
