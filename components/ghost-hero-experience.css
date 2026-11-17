@@ -82,6 +82,20 @@
   line-height: 1;
 }
 
+.ghostDashboardProfile {
+  position: absolute;
+  top: 92.2%;
+  left: 2.75%;
+  display: flex;
+  align-items: center;
+  width: 11.1%;
+  height: 5.8%;
+  background: #1b2830;
+  color: #f0f4f6;
+  font-size: 0.78cqw;
+  line-height: 1;
+}
+
 /* Percentages match the assistant video bounds in the original 1769 × 851 art. */
 .ghostDashboardVideoSlot {
   position: absolute;
