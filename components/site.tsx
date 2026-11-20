@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform }
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GhostHeroExperience } from "./ghost-hero-experience";
+import { AgentsSection } from "./agents-section";
 
 const consoleUrl = "https://console.immortals.co/";
 
@@ -153,29 +154,15 @@ function GhostPage({data}:{data:any}) {
   const [infoRailTravel, setInfoRailTravel] = useState(0);
   const [infoRailAxis, setInfoRailAxis] = useState<"x" | "y">("y");
   const [perfectCompact, setPerfectCompact] = useState(false);
-  const statementRef = useRef<HTMLElement | null>(null);
   const infoRef = useRef<HTMLElement | null>(null);
   const therapyRef = useRef<HTMLElement | null>(null);
   const therapyVideoRef = useRef<HTMLVideoElement | null>(null);
   const therapyVideoFrameRef = useRef<number | null>(null);
   const perfectRef = useRef<HTMLElement | null>(null);
   const infoRailRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress: statementProgress } = useScroll({ target: statementRef, offset: ["start start", "end start"] });
   const { scrollYProgress: infoProgress } = useScroll({ target: infoRef, offset: ["start start", "end start"] });
   const { scrollYProgress: therapyProgress } = useScroll({ target: therapyRef, offset: ["start start", "end end"] });
   const { scrollYProgress: perfectProgress } = useScroll({ target: perfectRef, offset: ["start start", "end end"] });
-  const statementSurfaceY = useTransform(statementProgress, [0, .86, 1], ["0vh", "0vh", "-8vh"]);
-  const statementSurfaceScale = useTransform(statementProgress, [0, .86, 1], [1, 1, .985]);
-  const statementSurfaceOpacity = useTransform(statementProgress, [0, .9, 1], [1, 1, .7]);
-  const statementImageScale = useTransform(statementProgress, [0, .5, 1], [1.04, 1, 1.03]);
-  const statementImageY = useTransform(statementProgress, [0, 1], [0, -260]);
-  const statementShadeOpacity = useTransform(statementProgress, [0, .2, .72, 1], [.62, .82, .82, .68]);
-  const statementFirstY = useTransform(statementProgress, [0, .1, .18], ["0%", "-100%", "-100%"]);
-  const statementFirstOpacity = useTransform(statementProgress, [0, .08, .16], [1, .35, 0]);
-  const statementSecondY = useTransform(statementProgress, [0, .08, .2], ["100%", "100%", "0%"]);
-  const statementSecondOpacity = useTransform(statementProgress, [0, .1, .2], [0, 0, 1]);
-  const statementSecondYLate = useTransform(statementProgress, [0, .11, .23], ["100%", "100%", "0%"]);
-  const statementSecondOpacityLate = useTransform(statementProgress, [0, .13, .23], [0, 0, 1]);
   const infoSurfaceY = useTransform(infoProgress, [0, .08, .9, 1], ["8vh", "0vh", "0vh", "-5vh"]);
   const infoSurfaceOpacity = useTransform(infoProgress, [0, .08, .92, 1], [.75, 1, 1, .65]);
   const infoRailOffset = useTransform(infoProgress, [0, .14, .84, 1], [0, 0, -infoRailTravel, -infoRailTravel]);
@@ -255,29 +242,7 @@ function GhostPage({data}:{data:any}) {
     <Header/>
     <GhostHeroExperience action={consoleUrl}/>
 
-    <motion.section ref={statementRef} className="ghostCloneStatement" aria-label="Ghost recovery statement">
-      <motion.div className="ghostCloneStatementSticky" style={{y:statementSurfaceY,scale:statementSurfaceScale,opacity:statementSurfaceOpacity}}>
-        <motion.div className="ghostCloneStatementMedia" style={{scale:statementImageScale,y:statementImageY}}>
-          <Image src="/images/female-group.webp" alt="" fill sizes="100vw"/>
-        </motion.div>
-        <motion.div className="ghostCloneStatementShade" style={{opacity:statementShadeOpacity}}/>
-        <div className="ghostCloneStatementCopy">
-          <h2 data-split="heading" aria-label="Modern security leaves little room for slow intelligence">
-            <span className="ghostCloneLineParent" aria-hidden="true">
-              <motion.span className="ghostCloneLineChild" style={{y:statementFirstY,opacity:statementFirstOpacity}}>Modern security leaves little room for <span>slow intelligence</span></motion.span>
-            </span>
-          </h2>
-          <h2 data-split="heading" aria-label="Ghost is here to make early warning possible">
-            <span className="ghostCloneLineParent" aria-hidden="true">
-              <motion.span className="ghostCloneLineChild" style={{y:statementSecondY,opacity:statementSecondOpacity}}>Ghost is here to make early warning</motion.span>
-            </span>
-            <span className="ghostCloneLineParent" aria-hidden="true">
-              <motion.span className="ghostCloneLineChild" style={{y:statementSecondYLate,opacity:statementSecondOpacityLate}}>possible</motion.span>
-            </span>
-          </h2>
-        </div>
-      </motion.div>
-    </motion.section>
+    <AgentsSection/>
 
     <motion.section ref={infoRef} id="ghost-clone-signal" className="ghostCloneInfo">
       <motion.div className="ghostCloneInfoSticky" style={{y:infoRailAxis === "x" ? infoSurfaceY : 0,opacity:infoRailAxis === "x" ? infoSurfaceOpacity : 1}}>
