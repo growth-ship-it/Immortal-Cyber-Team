@@ -64,7 +64,6 @@ function AgentConversation({ active }: { active: number }) {
   const reducedMotion = useReducedMotion();
   const capability = capabilities[active];
   return <aside className={styles.conversation} aria-label="Example questions for Ghost">
-    <div className={styles.conversationHeading}>Talk with Ghost</div>
     <AnimatePresence mode="wait" initial={false}><motion.div key={active} className={styles.conversationContent} initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .25 }}>
       <div className={styles.prompt}><span className={styles.questionLabel}>Example question</span>{capability.prompt}</div>
       <p className={styles.responseLabel}>Ghost helps your team</p>
@@ -136,7 +135,7 @@ export function AgentsSection() {
 
   return <section id="agents" className={styles.section} aria-labelledby="agents-heading">
     <div className={styles.inner}>
-      <div className={styles.heading}><h2 id="agents-heading">Immortal threat<br/>intelligence with Ghost</h2><a className={styles.startButton} href={consoleUrl}>Talk with Ghost</a></div>
+      <div className={styles.heading}><h2 id="agents-heading">Discover Ghost’s<br/>intelligence capabilities</h2><a className={styles.startButton} href={consoleUrl}>Talk with Ghost</a></div>
       <div className={styles.layout}>
         <div className={styles.features}>{capabilities.slice(0, 3).map((capability, i) => <motion.article key={capability.id} id={`agents-${capability.id}`} ref={el => { featureRefs.current[i] = el; }} className={styles.feature} initial={{ opacity: reducedMotion ? 1 : .2, x: reducedMotion ? 0 : -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: .25, once: true }} transition={{ duration: .65, ease: [.2, .8, .2, 1] }}>
           <VideoPlaceholder title={capability.title} index={i}/>

@@ -64,16 +64,42 @@ export function Header() {
     setOpenDrop(null);
   }, [path]);
 
-  const toggleDrop = (name: "immortals" | "company") => setOpenDrop(openDrop === name ? null : name);
-  const closeMenus = () => setOpenDrop(null);
+  useEffect(() => {
+    if (!open && !openDrop) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        setOpenDrop(null);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [open, openDrop]);
+
+  const toggleDrop = (name: "immortals" | "company") => setOpenDrop(current => current === name ? null : name);
+  const hoverDrop = (name: "immortals" | "company" | null) => {
+    if (window.matchMedia("(min-width: 992px) and (hover: hover)").matches) setOpenDrop(name);
+  };
+  const closeMenus = () => {
+    setOpen(false);
+    setOpenDrop(null);
+  };
+  const toggleMenu = () => {
+    setOpen(current => !current);
+    setOpenDrop(null);
+  };
 
   return <header className="header">
-    <Link href="/" className="brand"><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={150} height={46} priority /></Link>
-    <button className={open ? "menu open" : "menu"} onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}><span aria-hidden>{open ? "CLOSE" : "MENU"}</span><i/><i/></button>
-    <nav className={open ? "nav open" : "nav"}>
-      <div className={openDrop === "immortals" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => setOpenDrop("immortals")} onMouseLeave={closeMenus}>
-        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "immortals"} onClick={() => toggleDrop("immortals")}>Immortals <span className="navChevron" aria-hidden /></button>
-        <div className="dropPanel immortalMenu" role="menu">
+    <Link href="/" className="brand" onClick={closeMenus}><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={150} height={46} priority /></Link>
+    <button type="button" className={open ? "menu open" : "menu"} onClick={toggleMenu} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="main-navigation">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <path d={open ? "M6 6l12 12M6 18L18 6" : "M3 6h18M3 12h18M3 18h18"}/>
+      </svg>
+    </button>
+    <nav id="main-navigation" className={open ? "nav open" : "nav"} aria-label="Main navigation">
+      <div className={openDrop === "immortals" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => hoverDrop("immortals")} onMouseLeave={() => hoverDrop(null)}>
+        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "immortals"} aria-controls="immortals-menu" onClick={() => toggleDrop("immortals")}>Immortals <span className="navChevron" aria-hidden /></button>
+        <div id="immortals-menu" className="dropPanel immortalMenu" role="menu">
           <div className="navCardRow">
             {Object.entries(specialists).map(([slug, item]) => <Link key={slug} className="navSpecialistCard" href={`/${slug}`} role="menuitem" onClick={closeMenus}>
               <div className="navSpecialistCopy"><b>{item.name[0]+item.name.slice(1).toLowerCase()}</b><span>{navRoles[slug] || item.role}</span></div>
@@ -82,13 +108,13 @@ export function Header() {
           </div>
         </div>
       </div>
-      <Link className={path === "/training" ? "active" : ""} href="/training">Training</Link>
-      <Link className={path === "/pricing" ? "active" : ""} href="/pricing">Pricing</Link>
-      <div className={openDrop === "company" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => setOpenDrop("company")} onMouseLeave={closeMenus}>
-        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "company"} onClick={() => toggleDrop("company")}>Company <span className="navChevron" aria-hidden /></button>
-        <div className="dropPanel companyMenu" role="menu">
+      <Link className={path === "/training" ? "active" : ""} href="/training" onClick={closeMenus}>Training</Link>
+      <Link className={path === "/pricing" ? "active" : ""} href="/pricing" onClick={closeMenus}>Pricing</Link>
+      <div className={openDrop === "company" ? "navDrop isOpen" : "navDrop"} onMouseEnter={() => hoverDrop("company")} onMouseLeave={() => hoverDrop(null)}>
+        <button type="button" aria-haspopup="true" aria-expanded={openDrop === "company"} aria-controls="company-menu" onClick={() => toggleDrop("company")}>Company <span className="navChevron" aria-hidden /></button>
+        <div id="company-menu" className="dropPanel companyMenu" role="menu">
           <div className="companyMega">
-            <div className="companyFeature"><Image src="/images/nav/company-free-account.png" alt="" width={1200} height={1200}/><a href={consoleUrl} className="companyCreate">Create a Free Account</a></div>
+            <div className="companyFeature"><Image src="/images/nav/company-free-account.png" alt="" width={1200} height={1200}/><a href={consoleUrl} className="companyCreate" onClick={closeMenus}>Create a Free Account</a></div>
             <i aria-hidden/>
             <div className="companyLinks">
               <div><Link href="/about-us" role="menuitem" onClick={closeMenus}>About Us</Link><p>Our mission, team, and the future of cyber workforce development.</p></div>
