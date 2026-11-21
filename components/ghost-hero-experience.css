@@ -116,10 +116,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: calc(100% - 50px);
+    height: calc(100% - 25px);
   }
   .ghostHeroJourney .ghostCloneHeroCopy > * { flex-shrink: 0; }
   .ghostHeroJourney .ghostCloneHeroPromptGroup { margin-top: auto; }
+  .ghostHeroJourney .ghostCloneHeroCopy .ghostCloneHeroIntro { margin-top: 10px; }
   .ghostHeroJourney .ghostCloneShowreel {
     position: absolute;
     top: 27%;
