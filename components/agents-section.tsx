@@ -69,7 +69,7 @@ function AgentConversation({ active }: { active: number }) {
       <p className={styles.responseLabel}>Ghost helps your team</p>
       <motion.div className={styles.agentResult} initial={{ opacity: reducedMotion ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ delay: reducedMotion ? 0 : .35, duration: .4 }}><p>{capability.response}</p><h4>Outputs</h4><ul>{capability.outputs.map(output => <li key={output}>{output}</li>)}</ul></motion.div>
     </motion.div></AnimatePresence>
-    <a className={styles.composer} href={consoleUrl}>Talk with Ghost <Arrow/></a>
+    <a className={styles.composer} href={consoleUrl}>Chat with Ghost <Arrow/></a>
   </aside>;
 }
 
@@ -102,7 +102,7 @@ function SupplyChainPanel() {
         <p className={styles.detailIntro}>{capability.tagline}</p>
         <ul key={tab} className={styles.detailLines}>{supplyDetails[tab].map((line, i) => <li key={line} style={{ animationDelay: `${i * .08}s` }}>{line}</li>)}</ul>
       </div>
-      <a className={styles.detailCta} href={consoleUrl}>Talk with Ghost <Arrow/></a>
+      <a className={styles.detailCta} href={consoleUrl}>Chat with Ghost <Arrow/></a>
     </div>
   </div>;
 }
@@ -135,11 +135,11 @@ export function AgentsSection() {
 
   return <section id="agents" className={styles.section} aria-labelledby="agents-heading">
     <div className={styles.inner}>
-      <div className={styles.heading}><h2 id="agents-heading">Discover Ghost’s<br/>intelligence capabilities</h2><a className={styles.startButton} href={consoleUrl}>Talk with Ghost</a></div>
+      <div className={styles.heading}><h2 id="agents-heading">Discover Ghost’s<br/>intelligence capabilities</h2><a className={styles.startButton} href={consoleUrl}>Chat with Ghost</a></div>
       <div className={styles.layout}>
         <div className={styles.features}>{capabilities.slice(0, 3).map((capability, i) => <motion.article key={capability.id} id={`agents-${capability.id}`} ref={el => { featureRefs.current[i] = el; }} className={styles.feature} initial={{ opacity: reducedMotion ? 1 : .2, x: reducedMotion ? 0 : -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: .25, once: true }} transition={{ duration: .65, ease: [.2, .8, .2, 1] }}>
           <VideoPlaceholder title={capability.title} index={i}/>
-          <div className={styles.featureFooter}><div><h3>{capability.title}</h3><p>{capability.description}</p></div><a href={consoleUrl}>Talk with Ghost <Arrow/></a></div>
+          <div className={styles.featureFooter}><div><h3>{capability.title}</h3><p>{capability.description}</p></div><a href={consoleUrl}>Chat with Ghost <Arrow/></a></div>
         </motion.article>)}</div>
         <AgentConversation active={active}/>
       </div>
