@@ -111,7 +111,7 @@
 }
 
 @media (max-width: 560px) {
-  .ghostHeroJourney { --ghost-stage-height: max(100svh, 640px); }
+  .ghostHeroJourney { --ghost-stage-height: max(100svh, 640px); --ghost-media-top: 60px; }
   .ghostHeroJourney .ghostCloneHeroCopy {
     display: flex;
     flex-direction: column;
@@ -128,13 +128,15 @@
     right: 0;
     bottom: auto;
     width: 50px;
-    height: 206px;
+    height: 220px;
     min-height: 0;
     margin: 0;
-    padding: 74px 0 8px;
+    padding: 20px 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 18px;
     background: #090b10b8;
     border-right: 0;
     border-radius: 8px 0 0 8px;
@@ -147,20 +149,13 @@
     line-height: 1;
   }
   .ghostHeroJourney .ghostCloneShowreel:before {
-    display: block;
-    top: 5px;
-    left: 5px;
-    width: 40px;
-    height: 52px;
-    background-position: center top;
+    display: none;
   }
   .ghostHeroJourney .ghostCloneShowreel:after {
-    top: 28px;
-    left: 13px;
-    right: auto;
-    bottom: auto;
-    width: 25px;
-    height: 25px;
+    position: static;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
     font-size: 11px;
   }
   .ghostHeroJourney .ghostCloneShowreel:hover:after,
@@ -170,10 +165,8 @@
 }
 
 @media (max-width: 560px) and (max-height: 720px) {
-  .ghostHeroJourney .ghostCloneShowreel { top: 17%; height: 180px; padding-top: 64px; }
+  .ghostHeroJourney .ghostCloneShowreel { top: 17%; height: 200px; padding: 18px 0; gap: 14px; }
   .ghostHeroJourney .ghostCloneShowreel span { font-size: 9px; }
-  .ghostHeroJourney .ghostCloneShowreel:before { height: 44px; }
-  .ghostHeroJourney .ghostCloneShowreel:after { top: 23px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
