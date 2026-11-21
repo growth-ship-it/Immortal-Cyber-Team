@@ -120,6 +120,7 @@
   }
   .ghostHeroJourney .ghostCloneHeroCopy > * { flex-shrink: 0; }
   .ghostHeroJourney .ghostCloneHeroPromptGroup { margin-top: auto; }
+  .ghostHeroJourney .ghostCloneVoiceStatus:empty { min-height: 0; height: 0; }
   .ghostHeroJourney .ghostCloneHeroCopy .ghostCloneHeroIntro { margin-top: 10px; }
   .ghostHeroJourney .ghostCloneShowreel {
     position: absolute;
