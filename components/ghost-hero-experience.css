@@ -154,8 +154,11 @@
   .ghostHeroJourney .ghostCloneShowreel:after {
     position: static;
     flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
+    box-sizing: border-box;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    text-indent: 1px;
     font-size: 11px;
   }
   .ghostHeroJourney .ghostCloneShowreel:hover:after,
