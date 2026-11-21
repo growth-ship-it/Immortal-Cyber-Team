@@ -1,28 +1,35 @@
-.section { background: #101619; color: #f5f4ee; padding: clamp(64px, 8vw, 124px) var(--content-inset, 5vw); }
-.inner { max-width: 1240px; margin: auto; }
-.header { display: grid; justify-items: start; gap: 28px; }
-.section h2 { max-width: 19ch; font-size: clamp(38px, 5.3vw, 82px); line-height: 1.01; letter-spacing: -.045em; margin: 0; }
-.choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 48px 0 16px; }
-.choices button, .question button { font: inherit; color: inherit; cursor: pointer; border: 1px solid #556166; background: transparent; padding: 10px 16px; }
-.choices button[aria-pressed="true"] { background: #f7ef99; color: #141714; border-color: transparent; }
-.panel { display: grid; grid-template-columns: 0.9fr 1.1fr; border: 1px solid #435056; background: #182126; }
-.portrait { position: relative; min-height: 380px; background: #0a1013; }
-.portrait img { object-fit: cover; object-position: center 24%; }
-.prompts { align-self: center; padding: clamp(24px, 4vw, 64px); }
-.prompts h3 { font-size: clamp(30px, 3.2vw, 50px); line-height: 1.06; margin: 0; }
-.prompts p { color: #c8d1d4; margin: 14px 0 24px; }
-.question { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #49565b; }
-.question button { padding: 9px 12px; font-size: 14px; }
-.notice { display: block; font-size: 14px; margin-bottom: 22px; }
-.prompts a { color: var(--agent-color); }
-.toolkit { margin-top: clamp(60px, 8vw, 110px); }
-.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 32px; margin-top: 36px; }
-.tools a { padding: 24px 0; border-top: 1px solid #596266; color: inherit; }
-.tools h3 { font-size: 22px; margin: 0 0 12px; }
-.tools span { font-size: 14px; color: #f7ef99; }
-.section :focus-visible { outline: 2px solid #f7ef99; outline-offset: 3px; }
+.section {
+  padding: clamp(52px, 7vw, 112px) var(--content-inset, 5vw);
+  background: #0c1317;
+  color: #f4f5ef;
+  scroll-margin-top: 64px;
+}
+.hero, .library, .toolkit { max-width: 1160px; margin-inline: auto; }
+.hero {
+  padding: clamp(28px, 6vw, 80px);
+  background: linear-gradient(100deg, #0d151bf5 12%, #102029cd 62%, #10202950), url('/images/team.webp') center / cover;
+  border-left: 3px solid #f7ef99;
+}
+.hero p, .topic p { color: #f7ef99; margin: 0 0 12px; font-size: .9rem; }
+.section h2 { max-width: 19ch; margin: 0; font-size: clamp(38px, 5.6vw, 78px); line-height: 1.04; letter-spacing: -.045em; }
+.hero div { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 30px; }
+.hero a, .toolkit a { color: #f7ef99; text-decoration: underline; text-underline-offset: 5px; }
+.library { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr); gap: clamp(24px, 6vw, 84px); padding-block: 56px; }
+.index { position: sticky; top: 80px; align-self: start; display: grid; max-height: calc(100svh - 100px); overflow-y: auto; }
+.index a { color: #d1dadb; padding: 8px 4px; }
+.index a:hover { color: #f7ef99; }
+.topic, .toolkit { scroll-margin-top: 80px; }
+.topic { border-top: 1px solid #546167; padding: 28px 0 40px; }
+.topic h3, .toolkit dt { margin: 0 0 18px; font-size: clamp(24px, 3vw, 40px); line-height: 1.1; }
+.prompt { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px; background: #19252b; margin-top: 8px; }
+.prompt button { background: transparent; border: 1px solid #627277; padding: 9px; color: inherit; cursor: pointer; font: inherit; }
+.toolkit dl { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); gap: 24px; margin: 32px 0; }
+.toolkit dl div { border-top: 2px solid #536566; padding-top: 16px; }
+.toolkit dt { font-size: 24px; }
+.toolkit dd { color: #cbd4d5; margin: 0; }
+.status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.section :focus-visible { outline: 2px solid #f7ef99; outline-offset: 2px; }
 @media (max-width: 700px) {
-  .panel, .tools { grid-template-columns: 1fr; }
-  .portrait { min-height: 0; height: clamp(200px, 58vw, 330px); }
-  .choices { margin-top: 32px; }
+  .library { display: block; padding-block: 32px; }
+  .index { position: static; display: flex; flex-wrap: wrap; gap: 0 14px; max-height: none; margin-bottom: 24px; }
 }
