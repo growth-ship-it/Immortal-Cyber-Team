@@ -90,7 +90,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
             <p className="ghostCloneHeroRole">Intelligence Specialist</p>
             <GhostPromptForm action={action} />
             <p className="ghostCloneHeroIntro">Ghost is the Immortal Cyber Team&apos;s Intelligence Specialist, turning live threats and exposures into clear, immediate action.</p>
-            <a className="ghostCloneShowreel" href="https://www.youtube.com/watch?v=8aQzmsR5av4" target="_blank" rel="noreferrer"><span>WATCH GHOST<br />IN ACTION</span></a>
+            <a className="ghostCloneShowreel" href="https://www.youtube.com/watch?v=8aQzmsR5av4" target="_blank" rel="noreferrer"><span>WATCH GHOST IN ACTION</span></a>
           </div>
           <div className="ghostCloneScroll">SCROLL TO EXPLORE</div>
         </motion.section>

@@ -23,7 +23,6 @@
 .featureFooter a svg{transition:transform .2s}
 .featureFooter a:hover svg{transform:translateX(3px)}
 .conversation{position:sticky;top:120px;height:min(640px,calc(100svh - 140px));min-height:360px;background:#101010;border:1px solid #282828;border-radius:24px;padding:12px;display:flex;flex-direction:column;font-size:14px;line-height:1.4;overflow:hidden}
-.conversationHeading{font-size:14px;padding:5px 8px 16px;color:#eee}
 .conversationContent{flex:1;min-height:0;overflow:auto;scrollbar-width:thin}
 .prompt{border-radius:16px;border:1px solid #333;background:#202020;padding:12px;color:#eee}
 .questionLabel{display:block;color:#888;font-size:11px;margin-bottom:5px}

@@ -170,7 +170,7 @@
 .companyLinks p{margin:0;color:#839396;font:400 14px/16px Arial,sans-serif}
 @media(max-width:991px){.dropPanel{position:static;width:100%;transform:none!important;padding:16px 0;background:transparent}.navCardRow,.companyMega{display:grid;grid-template-columns:1fr;gap:14px}.navSpecialistCard{align-items:flex-start}.navSpecialistCard img,.companyFeature img,.companyMega>i{display:none}.companyFeature{width:100%}.companyLinks{max-width:none}.companyCreate{width:auto;align-self:flex-start}}
 @media(min-width:992px){.nav{width:min(560px,100%);justify-content:center;gap:0}.header{grid-template-columns:minmax(180px,280px) minmax(430px,1fr) minmax(245px,300px)}}
-@media(max-width:991px){.nav>a,.navDrop>button{padding:18px 0;font-size:30px;line-height:1.08}.btn{min-height:44px;padding:8px 20px}}
+@media(max-width:991px){.nav>a,.navDrop>button{padding:18px 0;font-size:24px;line-height:1.08}.btn{min-height:44px;padding:8px 20px}}
 
 /* Live Immortal dropdown interaction and asset-ratio polish */
 .navDrop.isOpen .dropPanel{opacity:1;visibility:visible;transform:translate(-50%,0)}
@@ -247,14 +247,25 @@
   .header { display: flex; gap: 16px; }
   .menu {
     right: var(--page-gutter);
-    width: auto;
-    min-width: 64px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
     padding: 0;
+    color: #fff;
+    cursor: pointer;
+    transition: color .2s ease;
   }
-  .menu span, .menu.open span { font-size: 16px; transform: none; }
+  .menu:hover, .menu:focus-visible { color: var(--yellow); }
+  .menu:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .nav { visibility: hidden; }
   .nav.open { visibility: visible; }
-  .nav.open .dropPanel { padding-inline: 0; }
+  .nav .navDrop > .dropPanel { display: none; }
+  .nav.open .navDrop.isOpen > .dropPanel {
+    display: block;
+    visibility: visible;
+    padding-inline: 0;
+  }
+  .navSpecialistCard { padding-inline: 16px !important; }
   .linkCopy {
     width: calc(100% - 2 * var(--page-gutter));
     margin-inline: auto;
