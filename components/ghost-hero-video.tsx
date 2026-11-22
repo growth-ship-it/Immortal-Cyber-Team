@@ -8,7 +8,7 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 const NEUTRAL_TIME = 1.5;
 const FRAME_TIME = 1 / 24;
 const VIDEO_SRC = "/videos/ghost-hero-scrub.mp4";
-const POSTER_SRC = "/images/ghost-hero-poster.jpg";
+const POSTER_SRC = "/images/ghost-hero-facing-camera.jpg";
 
 export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<HTMLElement | null> }) {
   const videoRef = useRef<HTMLVideoElement>(null);

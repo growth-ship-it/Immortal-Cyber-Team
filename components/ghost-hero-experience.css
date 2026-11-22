@@ -177,7 +177,7 @@
   .ghostHeroStage { position: relative; top: 0; height: auto; }
   .ghostHeroJourney .ghostCloneHero {
     position: relative;
-    background: #070d11 url("/images/ghost-hero-poster.jpg") center top / cover no-repeat;
+    background: #070d11 url("/images/ghost-hero-facing-camera.jpg") center top / cover no-repeat;
     height: var(--ghost-stage-height);
     opacity: 1 !important;
     transform: none !important;
