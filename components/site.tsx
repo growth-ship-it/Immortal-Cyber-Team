@@ -25,28 +25,6 @@ const navAssets: Record<string, string> = {
   link: "/images/nav/link-nav.webp",
 };
 
-function GhostRecoveryCard({item,sectionProgress,axis,index}:{item:string[];sectionProgress:any;axis:"x"|"y";index:number}) {
-  const cardRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start end", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, .5, 1], [42, -18, -86]);
-  const imageScale = useTransform(scrollYProgress, [0, .35, .72, 1], [1.12, 1.07, 1.025, 1]);
-  const mobileStart = .1 + index * .1;
-  const mobileImageY = useTransform(sectionProgress, [mobileStart, mobileStart + .14, mobileStart + .28], [42, -18, -86]);
-  const mobileImageScale = useTransform(sectionProgress, [mobileStart, mobileStart + .14, mobileStart + .28], [1.12, 1.07, 1]);
-
-  return (
-    <article ref={cardRef}>
-      <div className="ghostCloneRecoveryImage">
-        <motion.div className="ghostCloneRecoveryImageInner" style={{y:axis === "x" ? mobileImageY : imageY,scale:axis === "x" ? mobileImageScale : imageScale}}>
-          <Image src="/images/female-group.webp" alt="" fill sizes="(max-width: 900px) 82vw, 32vw"/>
-        </motion.div>
-      </div>
-      <h3>{item[0]}</h3>
-      <section><span>{item[1]}</span><p>{item[2]}</p></section>
-    </article>
-  );
-}
-
 export const specialists: Record<string, any> = {
   "intelligence-specialist": { name: "GHOST", role: "Intelligence Specialist", key: "ghost", accent: "#e554ff", intro: "Ghost is your Intelligence Specialist and founder of the Immortal Cyber Team. Rising from Baltimore's streets, she evolved from hacker to intelligence visionary.", briefing: "Join the Daily Intelligence Briefing", capabilities: ["Daily Intelligence Briefing", "Monitor Global Threat Actor Activities", "Dark Web Monitoring", "Monitor Third-Party Supplier Exposures", "Leaked Password Monitoring", "Stealer Malware Monitoring", "Secure Breached Accounts", "Track the Latest Vulnerabilities", "Track the Latest Exploits", "Cyber Threat Intelligence Feeds", "Dumpsite Data Leak Monitoring", "Create Intelligence Reports"] },
   "penetration-tester": { name: "SPECTRE", role: "Penetration Tester", key: "spectre", accent: "#cef069", intro: "Spectre is your elite Penetration Tester. He maps every exposed system, finds vulnerabilities, exploits weaknesses, and reports the path an attacker would take.", briefing: "Daily Penetration Test Briefing", capabilities: ["Daily Penetration Test Briefing", "Manage Penetration Tests", "External Penetration Testing", "Internal Penetration Testing", "Web Application Testing", "Cloud Security Testing", "Exploit Vulnerabilities", "Password Cracking", "Lateral Movement", "Create Penetration Test Reports"] },
@@ -178,22 +156,13 @@ function getScrollScrubTime(progress:number,duration:number) {
 }
 
 function GhostPage({data}:{data:any}) {
-  const [infoRailTravel, setInfoRailTravel] = useState(0);
-  const [infoRailAxis, setInfoRailAxis] = useState<"x" | "y">("y");
   const [perfectCompact, setPerfectCompact] = useState(false);
-  const infoRef = useRef<HTMLElement | null>(null);
   const therapyRef = useRef<HTMLElement | null>(null);
   const therapyVideoRef = useRef<HTMLVideoElement | null>(null);
   const therapyVideoFrameRef = useRef<number | null>(null);
   const perfectRef = useRef<HTMLElement | null>(null);
-  const infoRailRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress: infoProgress } = useScroll({ target: infoRef, offset: ["start start", "end start"] });
   const { scrollYProgress: therapyProgress } = useScroll({ target: therapyRef, offset: ["start start", "end end"] });
   const { scrollYProgress: perfectProgress } = useScroll({ target: perfectRef, offset: ["start start", "end end"] });
-  const infoSurfaceY = useTransform(infoProgress, [0, .08, .9, 1], ["8vh", "0vh", "0vh", "-5vh"]);
-  const infoSurfaceOpacity = useTransform(infoProgress, [0, .08, .92, 1], [.75, 1, 1, .65]);
-  const infoRailOffset = useTransform(infoProgress, [0, .14, .84, 1], [0, 0, -infoRailTravel, -infoRailTravel]);
-  const infoProgressScale = useTransform(infoProgress, [.14, .84], ["14.285%", "100%"]);
   const therapyFirstY = useTransform(therapyProgress, [0, .22, .43, .58], ["500%", "0%", "0%", "-260%"]);
   const therapyFirstOpacity = useTransform(therapyProgress, [0, .18, .46, .58], [0, 1, 1, 0]);
   const therapySecondY = useTransform(therapyProgress, [.32, .52, .76, .92], ["500%", "0%", "0%", "-260%"]);
@@ -219,28 +188,12 @@ function GhostPage({data}:{data:any}) {
     if (therapyVideoFrameRef.current !== null) cancelAnimationFrame(therapyVideoFrameRef.current);
   }, []);
   useEffect(() => {
-    const updateRailTravel = () => {
-      const rail = infoRailRef.current;
-      if (!rail) return;
-      const isDesktop = window.matchMedia("(min-width: 992px)").matches;
-      setPerfectCompact(window.matchMedia("(max-width: 768px)").matches);
-      setInfoRailAxis(isDesktop ? "y" : "x");
-      setInfoRailTravel(Math.max(0, isDesktop ? 0 : rail.scrollWidth - window.innerWidth));
-    };
-    requestAnimationFrame(updateRailTravel);
-    window.addEventListener("resize", updateRailTravel);
-    return () => window.removeEventListener("resize", updateRailTravel);
+    const compact = window.matchMedia("(max-width: 768px)");
+    const updateCompact = () => setPerfectCompact(compact.matches);
+    updateCompact();
+    compact.addEventListener("change", updateCompact);
+    return () => compact.removeEventListener("change", updateCompact);
   }, []);
-
-  const recoveryBlocks = [
-    ["Threat actor tracking", "01", "Follow campaigns, malware families and attacker movement before they become incidents."],
-    ["Credential exposure", "02", "Find leaked passwords, stealer infections and breached accounts while there is still time to respond."],
-    ["Exploit awareness", "03", "Connect new CVEs and active exploit activity to the technologies your business actually uses."],
-    ["Supplier risk", "04", "Monitor third parties and partners for the exposures attackers use as shortcuts."],
-    ["Executive clarity", "05", "Turn noisy evidence into briefings leaders can understand and teams can act on."],
-    ["Always-on coverage", "06", "Keep intelligence moving after hours without burning out your analysts."],
-    ["Action reports", "07", "Create focused reports that explain risk, priority and the next move."],
-  ];
   const homeDesign = [
     ["01", "Minimal footprint", "Deploy Ghost from the Immortal console without a hiring cycle or months of tooling work."],
     ["02", "Plug & Play intelligence", "Start with Ghost's daily briefing, then expand into credentials, exploits and suppliers."],
@@ -270,25 +223,6 @@ function GhostPage({data}:{data:any}) {
     <GhostHeroExperience action={consoleUrl}/>
 
     <AgentsSection/>
-
-    <motion.section ref={infoRef} id="ghost-clone-signal" className="ghostCloneInfo">
-      <motion.div className="ghostCloneInfoSticky" style={{y:infoRailAxis === "x" ? infoSurfaceY : 0,opacity:infoRailAxis === "x" ? infoSurfaceOpacity : 1}}>
-        <div className="ghostCloneInfoIntro">
-          <p>Improve security while your team keeps moving</p>
-          <h2>Ghost uses live intelligence to reset risk, focus and response</h2>
-          <a className="btn ghostCloneBriefingButton" href={consoleUrl}>Get a briefing</a>
-        </div>
-        <div className="ghostCloneRecoveryHead">
-          <p><span>01</span><span>/</span><span>07</span></p>
-          <div><motion.i style={{width:infoProgressScale}}/></div>
-        </div>
-        <div className="ghostCloneRecoveryViewport">
-          <motion.div ref={infoRailRef} className="ghostCloneRecovery" style={{x:infoRailAxis === "x" ? infoRailOffset : 0}}>
-            {recoveryBlocks.map((item,index)=><GhostRecoveryCard key={item[0]} item={item} index={index} axis={infoRailAxis} sectionProgress={infoProgress}/>)}
-          </motion.div>
-        </div>
-      </motion.div>
-    </motion.section>
 
     <motion.section ref={therapyRef} className="ghostCloneTherapy" aria-label="Ghost immediate action">
       <div className="ghostCloneTherapyTop">
