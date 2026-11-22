@@ -191,7 +191,7 @@
   .ghostDashboardSection { position: relative; padding: 64px 0; opacity: 1 !important; }
 }
 
-/* Compare the two dashboard exits after the hero has settled into the console. */
+/* Slide the full-size dashboard aside to reveal the Ghost introduction. */
 .ghostHeroJourney { height: calc(var(--ghost-stage-height) + 300svh); }
 .ghostHeroStage { perspective: 1500px; }
 .ghostDashboardMotion {
@@ -201,15 +201,6 @@
   transform-origin: center bottom;
   transform-style: preserve-3d;
   pointer-events: none;
-}
-.ghostMotionLabel {
-  position: absolute;
-  z-index: 4;
-  right: var(--content-inset);
-  top: 82px;
-  color: #c4cbd0;
-  font-size: 12px;
-  letter-spacing: .08em;
 }
 .ghostRevealIntro {
   position: absolute;
@@ -232,20 +223,7 @@
 .ghostRevealIntro p { max-width: 36ch; margin: 0 0 16px; font-size: clamp(16px, 1.5vw, 22px); line-height: 1.6; }
 .ghostHeroJourney--slide .ghostRevealIntro { max-width: 50%; padding-right: 24px; }
 .ghostHeroJourney--slide .ghostDashboardMotion { transform-origin: center center; }
-.ghostHeroJourney--flip .ghostRevealIntro { align-items: center; text-align: center; }
-.ghostHeroJourney--flip .ghostRevealIntro h2 { max-width: 19ch; }
-.ghostHeroJourney .ghostRepeatTitle {
-  position: relative;
-  z-index: 2;
-  margin: 0;
-  color: #fff;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: .14em;
-}
 @media (max-width: 560px) {
-  .ghostMotionLabel { top: 78px; font-size: 10px; }
-  .ghostHeroJourney .ghostRepeatTitle { font-size: 20px; letter-spacing: .12em; }
   .ghostHeroJourney--slide .ghostRevealIntro { max-width: 50%; padding-right: 12px; }
   .ghostHeroJourney--slide .ghostRevealIntro h2 { font-size: 26px; }
   .ghostHeroJourney--slide .ghostRevealIntro p { font-size: 13px; line-height: 1.5; }

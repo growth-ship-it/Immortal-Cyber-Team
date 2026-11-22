@@ -267,8 +267,7 @@ function GhostPage({data}:{data:any}) {
 
   return <main id="top" className="ghostClonePage" style={{"--accent":data.accent} as any}>
     <Header/>
-    <GhostHeroExperience action={consoleUrl} variant="slide"/>
-    <GhostHeroExperience action={consoleUrl} variant="flip"/>
+    <GhostHeroExperience action={consoleUrl}/>
 
     <AgentsSection/>
 
