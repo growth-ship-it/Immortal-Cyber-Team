@@ -1,6 +1,6 @@
 .section {
   padding: clamp(52px, 7vw, 112px) var(--content-inset, 5vw);
-  background: #0c1317;
+  background: #070d11;
   color: #f4f5ef;
   scroll-margin-top: 64px;
 }
@@ -33,3 +33,22 @@
   .library { display: block; padding-block: 32px; }
   .index { position: static; display: flex; flex-wrap: wrap; gap: 0 14px; max-height: none; margin-bottom: 24px; }
 }
+
+.demo { margin: 0 0 18px; border: 1px solid #47585f; }
+.canvas {
+  display: grid;
+  align-items: end;
+  min-height: clamp(215px, 27vw, 380px);
+  padding: clamp(18px, 4vw, 52px);
+  background: linear-gradient(85deg, #081318e6, #08131835), url("/images/team.webp") center / cover;
+}
+.sample { max-width: 32rem; padding-left: 20px; border-left: 4px solid #b9c5ca; color: white; }
+.sample span { display: block; font-size: .95rem; }
+.sample strong { display: block; margin-top: 8px; font-size: clamp(23px, 3vw, 40px); line-height: 1.08; }
+.canvas[data-step="1"] .sample, .canvas[data-step="2"] .sample { border-color: #f7ef99; }
+.canvas[data-step="1"] .sample span, .canvas[data-step="2"] .sample span { color: #f7ef99; }
+.canvas[data-step="2"] .sample { padding: 18px; background: #081318ed; }
+.canvas[data-step="2"] strong { font-size: clamp(30px, 4vw, 52px); }
+.controls { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 12px 16px; background: #172329; }
+.controls button { border: 0; padding: 10px 14px; background: #f7ef99; color: #101619; font: inherit; cursor: pointer; }
+.controls span { color: #d2dcdd; }

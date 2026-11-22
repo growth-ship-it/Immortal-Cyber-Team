@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./home-agent-guide.module.css";
 
 const topics = [
@@ -24,6 +24,40 @@ const tools = [
   ["Branches", "Preview edits on a separate branch before merging them into the live site."],
 ] as const;
 
+const treatments = ["Original layout", "Apply the accent color", "Increase heading contrast"] as const;
+
+function StyleDemo() {
+  const [step, setStep] = useState(0);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!playing) return;
+    const timer = window.setTimeout(() => {
+      if (step === treatments.length - 1) setPlaying(false);
+      else setStep(step + 1);
+    }, 2200);
+    return () => window.clearTimeout(timer);
+  }, [playing, step]);
+
+  function togglePlayback() {
+    if (!playing && step === treatments.length - 1) setStep(0);
+    setPlaying(!playing);
+  }
+
+  return <figure className={styles.demo}>
+    <div className={styles.canvas} data-step={step}>
+      <div className={styles.sample}>
+        <span>Immortal Cyber Teams</span>
+        <strong>Daily intelligence briefing</strong>
+      </div>
+    </div>
+    <figcaption className={styles.controls}>
+      <button type="button" onClick={togglePlayback}>{playing ? "Ⅱ Pause demo" : step === 2 ? "↻ Replay demo" : "▶ Play demo"}</button>
+      <span aria-live="polite">{treatments[step]}</span>
+    </figcaption>
+  </figure>;
+}
+
 export function HomeAgentGuide() {
   const [feedback, setFeedback] = useState("");
   async function copy(prompt: string) {
@@ -48,6 +82,7 @@ export function HomeAgentGuide() {
       </nav>
       <div>{topics.map(([title, category, ...prompts], index) => <article key={title} id={`agent-topic-${index + 1}`} className={styles.topic}>
         <p>{category}</p><h3>{title}</h3>
+        {category === "Visual design" && <StyleDemo/>}
         {prompts.map(prompt => <div className={styles.prompt} key={prompt}>
           <span>{prompt}</span>
           <button type="button" aria-label={`Copy prompt: ${prompt}`} onClick={() => copy(prompt)}>{feedback === "Copied to clipboard: " + prompt ? "Copied ✓" : "Copy"}</button>

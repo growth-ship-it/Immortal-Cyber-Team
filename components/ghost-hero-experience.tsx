@@ -1,13 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { GhostHeroVideo } from "./ghost-hero-video";
 import { GhostPromptForm } from "./ghost-prompt-form";
 import "./ghost-hero-experience.css";
 
-export function GhostHeroExperience({ action }: { action: string }) {
+function GhostTextReveal({ progress, start, children }: { progress: MotionValue<number>; start: number; children: ReactNode }) {
+  const reducedMotion = useReducedMotion();
+  const y = useTransform(progress, [start, start + 0.12], ["105%", "0%"]);
+  const opacity = useTransform(progress, [start, start + 0.1], [0, 1]);
+
+  return <span className="ghostTextRevealMask">
+    <motion.span className="ghostTextRevealLine" style={reducedMotion ? undefined : { y, opacity }}>{children}</motion.span>
+  </span>;
+}
+
+export function GhostHeroExperience({ action, variant = "slide" }: { action: string; variant?: "slide" | "flip" }) {
   const journeyRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const originRef = useRef<HTMLDivElement>(null);
@@ -25,9 +35,10 @@ export function GhostHeroExperience({ action }: { action: string }) {
   const slotWidth = useMotionValue(0);
   const slotHeight = useMotionValue(0);
   const slotRadius = useMotionValue(0);
+  const dashboardOffset = useMotionValue(0);
 
   const morph = useTransform(scrollYProgress, (progress) => {
-    const t = Math.min(1, Math.max(0, (progress - 0.06) / 0.66));
+    const t = Math.min(1, Math.max(0, (progress - 0.06) / 0.36));
     return t * t * (3 - 2 * t);
   });
   const left = useTransform(() => slotLeft.get() * morph.get());
@@ -39,6 +50,13 @@ export function GhostHeroExperience({ action }: { action: string }) {
   const copyY = useTransform(scrollYProgress, [0, 0.17], [0, -24]);
   const dashboardOpacity = useTransform(scrollYProgress, [0.08, 0.28], [0, 1]);
   const shadeOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
+  const slideProgress = useTransform(scrollYProgress, [0.56, 0.95], [0, 1]);
+  const dashboardX = useTransform(() => variant === "slide" ? dashboardOffset.get() * slideProgress.get() : 0);
+  const dashboardY = useTransform(scrollYProgress, [0.56, 0.95], ["0vh", variant === "flip" ? "-115vh" : "0vh"]);
+  const dashboardRotate = useTransform(scrollYProgress, [0.56, 0.95], [0, variant === "flip" ? 75 : 0]);
+  const introOpacity = useTransform(scrollYProgress, [0.56, 0.74], [0, 1]);
+  const introY = useTransform(scrollYProgress, [0.56, 0.85], [48, 0]);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     // Only cross the interaction boundary once; scrolling does not re-render the page.
@@ -54,14 +72,23 @@ export function GhostHeroExperience({ action }: { action: string }) {
     const measure = () => {
       const stageBounds = stage.getBoundingClientRect();
       const originBounds = origin.getBoundingClientRect();
-      const slotBounds = slot.getBoundingClientRect();
+      const frame = slot.closest<HTMLElement>(".ghostDashboardFrame");
+      dashboardOffset.set(frame ? frame.offsetWidth / 2 : 0);
+      let slotX = 0;
+      let slotY = 0;
+      let element: HTMLElement | null = slot;
+      while (element && element !== stage) {
+        slotX += element.offsetLeft;
+        slotY += element.offsetTop;
+        element = element.offsetParent as HTMLElement | null;
+      }
       originTop.set(originBounds.top - stageBounds.top);
       originWidth.set(originBounds.width);
       originHeight.set(originBounds.height);
-      slotLeft.set(slotBounds.left - stageBounds.left);
-      slotTop.set(slotBounds.top - stageBounds.top);
-      slotWidth.set(slotBounds.width);
-      slotHeight.set(slotBounds.height);
+      slotLeft.set(slotX);
+      slotTop.set(slotY);
+      slotWidth.set(slot.clientWidth);
+      slotHeight.set(slot.clientHeight);
       slotRadius.set(parseFloat(getComputedStyle(slot).borderTopLeftRadius) || 0);
       setMeasured(true);
     };
@@ -72,11 +99,21 @@ export function GhostHeroExperience({ action }: { action: string }) {
     observer.observe(origin);
     observer.observe(slot);
     return () => observer.disconnect();
-  }, [originTop, originWidth, originHeight, slotLeft, slotTop, slotWidth, slotHeight, slotRadius]);
+  }, [originTop, originWidth, originHeight, slotLeft, slotTop, slotWidth, slotHeight, slotRadius, dashboardOffset]);
 
   return (
-    <div ref={journeyRef} className="ghostHeroJourney">
+    <div ref={journeyRef} id={`ghost-${variant}`} className={`ghostHeroJourney ghostHeroJourney--${variant}`}>
       <div ref={stageRef} className="ghostHeroStage" data-hero-active={heroActive || reducedMotion ? "true" : "false"}>
+        <span className="ghostMotionLabel">{variant === "slide" ? "01 / Slide right" : "02 / Flip upward"}</span>
+        <motion.div className="ghostRevealIntro" style={{ opacity: reducedMotion ? 1 : introOpacity, y: reducedMotion ? 0 : introY }}>
+          <h2>
+            <GhostTextReveal progress={scrollYProgress} start={0.6}>Meet Ghost.</GhostTextReveal>
+            <GhostTextReveal progress={scrollYProgress} start={0.64}>See the threat.</GhostTextReveal>
+            <GhostTextReveal progress={scrollYProgress} start={0.68}>Make your move.</GhostTextReveal>
+          </h2>
+          <p><GhostTextReveal progress={scrollYProgress} start={0.74}>Ghost turns global threat activity, exposed credentials and emerging exploits into intelligence your team can act on.</GhostTextReveal></p>
+          <p><GhostTextReveal progress={scrollYProgress} start={0.8}>Get clear priorities, investigate what matters and move from a question to your next decision.</GhostTextReveal></p>
+        </motion.div>
         <div ref={originRef} className="ghostHeroMediaOrigin" aria-hidden="true" />
         <motion.section
           className="ghostCloneHero"
@@ -86,7 +123,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
           style={{ opacity: reducedMotion ? 1 : copyOpacity, y: reducedMotion ? 0 : copyY }}
         >
           <div className="ghostCloneHeroCopy">
-            <h1>GHOST</h1>
+            {variant === "slide" ? <h1>GHOST</h1> : <h2 className="ghostRepeatTitle">GHOST</h2>}
             <p className="ghostCloneHeroRole">Intelligence Specialist</p>
             <GhostPromptForm action={action} />
             <p className="ghostCloneHeroIntro">Ghost is the Immortal Cyber Team&apos;s Intelligence Specialist, turning live threats and exposures into clear, immediate action.</p>
@@ -95,6 +132,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
           <div className="ghostCloneScroll">SCROLL TO EXPLORE</div>
         </motion.section>
 
+        <motion.div className="ghostDashboardMotion" style={reducedMotion ? undefined : { x: dashboardX, y: dashboardY, rotateX: dashboardRotate }}>
         <motion.section
           className="ghostDashboardSection"
           aria-label="Ghost inside the Immortal console"
@@ -125,6 +163,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
         >
           <GhostHeroVideo interactionRef={stageRef} />
           <motion.div className="ghostHeroMediaShade" style={{ opacity: reducedMotion ? 1 : shadeOpacity }} />
+        </motion.div>
         </motion.div>
       </div>
     </div>

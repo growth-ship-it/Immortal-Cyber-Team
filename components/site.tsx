@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform }
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GhostHeroExperience } from "./ghost-hero-experience";
+import { HomeHero } from "./home-hero";
 import { HomeAgentGuide } from './home-agent-guide';
 import { AgentsSection } from "./agents-section";
 
@@ -141,9 +142,7 @@ function FinalCTA({ image="/images/team.webp" }: {image?: string}) { return <sec
 
 const cards = Object.entries(specialists);
 export function HomePage() {
-  const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress,[0,.12],[0,90]);
-  return <main><Header/><section className="homeHero"><motion.div className="heroBg" style={{y:heroY}}><video autoPlay muted loop playsInline poster="/images/home-poster.jpg"><source src="/images/home-hero.mp4" type="video/mp4"/></video></motion.div><motion.div className="homeHeroContent" initial={{opacity:0,scale:.92}} animate={{opacity:1,scale:1}} transition={{duration:1.1,ease:[.2,.8,.2,1]}}><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={430} height={150}/><p>The Immortals track threat actors, reveal hidden assets, exploit vulnerabilities, triage security events, respond to breaches, and manage risk, to neutralize threats before they can emerge.</p><a className="btn lightBtn" href={consoleUrl}>Talk to an Immortal</a></motion.div><div className="iso">We are ISO<br/><b>27001 Certified</b></div></section>
+  return <main><Header/><HomeHero/>
   <HomeAgentGuide/>
   <section className="whiteStatement"><GlitchCorners/><Reveal><h2>Traditional cyber security has lost the war.<br/><span>We have changed the battlefield.</span></h2></Reveal></section>
   <section className="imageStatement"><Image src="/images/team.webp" alt="Immortal city" fill sizes="100vw"/><div className="shade"/><div className="statementGrid">{[["The Talent Gap is Exploding","4 million cybersecurity jobs are unfilled while threat-actor groups multiply - leaving organizations exposed and unprepared."],["The Cost of Failure is Devastating","Single breaches now cost over $100M, pushing global cybercrime losses toward $10.5 Trillion annually."],["Traditional Defenses Can’t Keep Up","Immortal Cyber Teams deliver superhuman speed, intelligence, and 24/7 response - without hiring delays or resource limits."]].map((x,i)=><Reveal key={x[0]} delay={i*.12}><h3>{x[0]}</h3><p>{x[1]}</p></Reveal>)}</div></section>
@@ -268,7 +267,8 @@ function GhostPage({data}:{data:any}) {
 
   return <main id="top" className="ghostClonePage" style={{"--accent":data.accent} as any}>
     <Header/>
-    <GhostHeroExperience action={consoleUrl}/>
+    <GhostHeroExperience action={consoleUrl} variant="slide"/>
+    <GhostHeroExperience action={consoleUrl} variant="flip"/>
 
     <AgentsSection/>
 
