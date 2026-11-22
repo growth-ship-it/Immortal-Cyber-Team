@@ -8,14 +8,11 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 const NEUTRAL_TIME = 1.5;
 const FRAME_TIME = 1 / 24;
 const VIDEO_SRC = "/videos/ghost-hero-scrub.mp4";
-const MOBILE_VIDEO_SRC = "/videos/ghost-hero-mobile.mp4";
 const POSTER_SRC = "/images/ghost-hero-poster.jpg";
 
 export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<HTMLElement | null> }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
-  const [autoplay, setAutoplay] = useState(false);
-  const [needsPlay, setNeedsPlay] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -68,26 +65,7 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       queueSeek();
     };
 
-    const playInline = () => {
-      if (disposed || finePointer.matches || reducedMotion.matches || !visible || document.hidden) return;
-      video.play().catch(() => {
-        if (!disposed && video.paused && visible && !document.hidden) setNeedsPlay(true);
-      });
-    };
-    const onPlaying = () => {
-      if (!disposed) {
-        setReady(true);
-        setNeedsPlay(false);
-      }
-    };
-    const onPause = () => {
-      if (!disposed && !finePointer.matches && visible && !document.hidden && video.readyState >= 2) setNeedsPlay(true);
-    };
     const onMetadata = () => {
-      if (!enabled) {
-        playInline();
-        return;
-      }
       video.pause();
       targetTime = Math.min(NEUTRAL_TIME, Math.max(0, video.duration - FRAME_TIME));
       video.currentTime = targetTime;
@@ -97,27 +75,19 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       if (enabled) setReady(true);
       queueSeek();
     };
-    const onLoadedData = () => enabled ? queueSeek() : playInline();
+    const onLoadedData = () => queueSeek();
     const onError = () => {
       enabled = false;
       stop();
       setReady(false);
-      if (!finePointer.matches) setNeedsPlay(true);
     };
     const configure = () => {
       enabled = finePointer.matches && !reducedMotion.matches;
-      setAutoplay(!finePointer.matches && !reducedMotion.matches);
-      setNeedsPlay(!finePointer.matches && reducedMotion.matches);
-      video.loop = !finePointer.matches;
-      video.muted = true;
-      video.defaultMuted = true;
       video.pause();
       stop();
-      if (!reducedMotion.matches) {
-        const source = finePointer.matches ? VIDEO_SRC : MOBILE_VIDEO_SRC;
-        if (video.getAttribute("src") !== source) {
-          setReady(false);
-          video.src = source;
+      if (enabled) {
+        if (!video.getAttribute("src")) {
+          video.src = VIDEO_SRC;
           video.load();
         } else if (video.readyState >= 1) {
           onMetadata();
@@ -126,22 +96,11 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
         setReady(false);
       }
     };
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        stop();
-        video.pause();
-      } else if (enabled) queueSeek();
-      else playInline();
-    };
+    const onVisibilityChange = () => document.hidden ? stop() : queueSeek();
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible) {
-        if (enabled) queueSeek();
-        else playInline();
-      } else {
-        stop();
-        video.pause();
-      }
+      if (visible) queueSeek();
+      else stop();
     });
 
     hero.addEventListener("pointermove", onPointerMove);
@@ -149,8 +108,6 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
     video.addEventListener("loadeddata", onLoadedData);
     video.addEventListener("seeked", onSeeked);
     video.addEventListener("error", onError);
-    video.addEventListener("playing", onPlaying);
-    video.addEventListener("pause", onPause);
     reducedMotion.addEventListener("change", configure);
     finePointer.addEventListener("change", configure);
     document.addEventListener("visibilitychange", onVisibilityChange);
@@ -167,8 +124,6 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       video.removeEventListener("loadeddata", onLoadedData);
       video.removeEventListener("seeked", onSeeked);
       video.removeEventListener("error", onError);
-      video.removeEventListener("playing", onPlaying);
-      video.removeEventListener("pause", onPause);
       reducedMotion.removeEventListener("change", configure);
       finePointer.removeEventListener("change", configure);
       document.removeEventListener("visibilitychange", onVisibilityChange);
@@ -178,14 +133,6 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
   return <div className="ghostCloneHeroMedia">
     <Image src={POSTER_SRC} alt="Ghost, Immortal Intelligence Specialist" fill priority unoptimized />
     <video ref={videoRef} className={ready ? "ghostHeroVideo isReady" : "ghostHeroVideo"}
-      autoPlay={autoplay} muted playsInline preload="auto" poster={POSTER_SRC} aria-hidden="true" tabIndex={-1} />
-    {needsPlay && <button className="ghostHeroVideoPlay" type="button" onClick={() => {
-      const video = videoRef.current;
-      if (!video) return;
-      video.muted = true;
-      video.loop = true;
-      if (!video.getAttribute("src")) video.src = MOBILE_VIDEO_SRC;
-      video.play().catch(() => setNeedsPlay(true));
-    }}>▶ Play Ghost video</button>}
+      muted playsInline preload="auto" poster={POSTER_SRC} aria-hidden="true" tabIndex={-1} />
   </div>;
 }

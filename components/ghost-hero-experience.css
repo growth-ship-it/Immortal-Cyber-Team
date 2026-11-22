@@ -177,6 +177,7 @@
   .ghostHeroStage { position: relative; top: 0; height: auto; }
   .ghostHeroJourney .ghostCloneHero {
     position: relative;
+    background: #070d11 url("/images/ghost-hero-poster.jpg") center top / cover no-repeat;
     height: var(--ghost-stage-height);
     opacity: 1 !important;
     transform: none !important;
@@ -274,23 +275,3 @@
 @media (max-width: 800px) and (prefers-reduced-motion: reduce) {
   .ghostHeroJourney--slide .ghostRevealIntro { top: auto; }
 }
-
-.ghostHeroJourney .ghostCloneHeroCopy { pointer-events: none; }
-.ghostHeroJourney .ghostCloneHeroCopy > * { pointer-events: auto; }
-.ghostHeroVideoPlay {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  padding: 12px 18px;
-  border: 1px solid #ffffff80;
-  border-radius: 6px;
-  background: #070d11e6;
-  color: #fff;
-  font: inherit;
-  white-space: nowrap;
-  cursor: pointer;
-  pointer-events: auto;
-}
-.ghostHeroVideoPlay:focus-visible { outline: 2px solid #f7ef99; outline-offset: 3px; }
