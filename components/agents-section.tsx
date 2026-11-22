@@ -135,7 +135,25 @@ export function AgentsSection() {
 
   return <section id="agents" className={styles.section} aria-labelledby="agents-heading">
     <div className={styles.inner}>
-      <div className={styles.heading}><h2 id="agents-heading">Discover Ghost’s<br/>intelligence capabilities</h2><a className={styles.startButton} href={consoleUrl}>Chat with Ghost</a></div>
+      <motion.div className={styles.heading}
+        initial={reducedMotion ? false : "hidden"}
+        whileInView="visible"
+        viewport={{ amount: .4, once: true }}>
+        <h2 id="agents-heading">
+          {["Discover Ghost’s", "intelligence capabilities"].map((line, index) => <span className={styles.headingMask} key={line}>
+            <motion.span className={styles.headingLine}
+              variants={{ hidden: { y: "110%", opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+              transition={{ duration: reducedMotion ? 0 : .7, delay: reducedMotion ? 0 : index * .12, ease: [.2, .8, .2, 1] }}>
+              {line}
+            </motion.span>
+          </span>)}
+        </h2>
+        <motion.a className={styles.startButton} href={consoleUrl}
+          variants={{ hidden: { y: 14, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+          transition={{ duration: reducedMotion ? 0 : .5, delay: reducedMotion ? 0 : .25 }}>
+          Chat with Ghost
+        </motion.a>
+      </motion.div>
       <div className={styles.layout}>
         <div className={styles.features}>{capabilities.slice(0, 3).map((capability, i) => <motion.article key={capability.id} id={`agents-${capability.id}`} ref={el => { featureRefs.current[i] = el; }} className={styles.feature} initial={{ opacity: reducedMotion ? 1 : .2, x: reducedMotion ? 0 : -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: .25, once: true }} transition={{ duration: .65, ease: [.2, .8, .2, 1] }}>
           <VideoPlaceholder title={capability.title} index={i}/>
