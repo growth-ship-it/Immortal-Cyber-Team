@@ -190,3 +190,75 @@
   }
   .ghostDashboardSection { position: relative; padding: 64px 0; opacity: 1 !important; }
 }
+
+/* Compare the two dashboard exits after the hero has settled into the console. */
+.ghostHeroJourney { height: calc(var(--ghost-stage-height) + 300svh); }
+.ghostHeroStage { perspective: 1500px; }
+.ghostDashboardMotion {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-origin: center bottom;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.ghostMotionLabel {
+  position: absolute;
+  z-index: 4;
+  right: var(--content-inset);
+  top: 82px;
+  color: #c4cbd0;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.ghostRevealIntro {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px var(--content-inset) 50px;
+  color: #fff;
+  pointer-events: none;
+}
+.ghostRevealIntro h2 {
+  max-width: 12ch;
+  margin: 0 0 24px;
+  font-size: clamp(36px, 4.8vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+}
+.ghostRevealIntro p { max-width: 36ch; margin: 0 0 16px; font-size: clamp(16px, 1.5vw, 22px); line-height: 1.6; }
+.ghostHeroJourney--slide .ghostRevealIntro { max-width: 50%; padding-right: 24px; }
+.ghostHeroJourney--slide .ghostDashboardMotion { transform-origin: center center; }
+.ghostHeroJourney--flip .ghostRevealIntro { align-items: center; text-align: center; }
+.ghostHeroJourney--flip .ghostRevealIntro h2 { max-width: 19ch; }
+.ghostHeroJourney .ghostRepeatTitle {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: .14em;
+}
+@media (max-width: 560px) {
+  .ghostMotionLabel { top: 78px; font-size: 10px; }
+  .ghostHeroJourney .ghostRepeatTitle { font-size: 20px; letter-spacing: .12em; }
+  .ghostHeroJourney--slide .ghostRevealIntro { max-width: 50%; padding-right: 12px; }
+  .ghostHeroJourney--slide .ghostRevealIntro h2 { font-size: 26px; }
+  .ghostHeroJourney--slide .ghostRevealIntro p { font-size: 13px; line-height: 1.5; }
+  .ghostRevealIntro h2 { font-size: 36px; }
+  .ghostRevealIntro p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ghostHeroJourney { height: auto; }
+  .ghostHeroStage { display: flex; flex-direction: column; }
+  .ghostDashboardMotion { position: relative; order: 1; }
+  .ghostDashboardMotion .ghostHeroSharedMedia { display: none; }
+  .ghostRevealIntro { position: relative; order: 2; max-width: 100% !important; opacity: 1 !important; transform: none !important; }
+}
+
+.ghostTextRevealMask { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.ghostTextRevealLine { display: block; }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 type SpeechResult = {
   readonly isFinal: boolean;
@@ -53,6 +53,7 @@ const ghostPrompts = [
 ];
 
 export function GhostPromptForm({ action }: { action: string }) {
+  const inputId = useId();
   const [typedPrompt, setTypedPrompt] = useState("");
   const [promptValue, setPromptValue] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -209,10 +210,10 @@ export function GhostPromptForm({ action }: { action: string }) {
   };
 
   return <div className="ghostCloneHeroPromptGroup">
-    <label htmlFor="ghost-hero-prompt">Chat with Ghost</label>
+    <label htmlFor={inputId}>Chat with Ghost</label>
     <form className="ghostCloneHeroPrompt" action={action} method="get">
       <input
-        id="ghost-hero-prompt"
+        id={inputId}
         name="prompt"
         type="text"
         value={promptValue}
