@@ -65,7 +65,16 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       queueSeek();
     };
 
+    const playInline = () => {
+      if (disposed || finePointer.matches || reducedMotion.matches || !visible || document.hidden) return;
+      video.play().catch(() => { if (!disposed) setReady(false); });
+    };
+    const onPlaying = () => { if (!disposed) setReady(true); };
     const onMetadata = () => {
+      if (!enabled) {
+        playInline();
+        return;
+      }
       video.pause();
       targetTime = Math.min(NEUTRAL_TIME, Math.max(0, video.duration - FRAME_TIME));
       video.currentTime = targetTime;
@@ -75,7 +84,7 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       if (enabled) setReady(true);
       queueSeek();
     };
-    const onLoadedData = () => queueSeek();
+    const onLoadedData = () => enabled ? queueSeek() : playInline();
     const onError = () => {
       enabled = false;
       stop();
@@ -83,9 +92,11 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
     };
     const configure = () => {
       enabled = finePointer.matches && !reducedMotion.matches;
+      video.loop = !finePointer.matches;
+      video.muted = true;
       video.pause();
       stop();
-      if (enabled) {
+      if (!reducedMotion.matches) {
         if (!video.getAttribute("src")) {
           video.src = VIDEO_SRC;
           video.load();
@@ -96,11 +107,22 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
         setReady(false);
       }
     };
-    const onVisibilityChange = () => document.hidden ? stop() : queueSeek();
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        stop();
+        video.pause();
+      } else if (enabled) queueSeek();
+      else playInline();
+    };
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible) queueSeek();
-      else stop();
+      if (visible) {
+        if (enabled) queueSeek();
+        else playInline();
+      } else {
+        stop();
+        video.pause();
+      }
     });
 
     hero.addEventListener("pointermove", onPointerMove);
@@ -108,6 +130,7 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
     video.addEventListener("loadeddata", onLoadedData);
     video.addEventListener("seeked", onSeeked);
     video.addEventListener("error", onError);
+    video.addEventListener("playing", onPlaying);
     reducedMotion.addEventListener("change", configure);
     finePointer.addEventListener("change", configure);
     document.addEventListener("visibilitychange", onVisibilityChange);
@@ -124,6 +147,7 @@ export function GhostHeroVideo({ interactionRef }: { interactionRef?: RefObject<
       video.removeEventListener("loadeddata", onLoadedData);
       video.removeEventListener("seeked", onSeeked);
       video.removeEventListener("error", onError);
+      video.removeEventListener("playing", onPlaying);
       reducedMotion.removeEventListener("change", configure);
       finePointer.removeEventListener("change", configure);
       document.removeEventListener("visibilitychange", onVisibilityChange);

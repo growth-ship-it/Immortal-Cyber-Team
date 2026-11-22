@@ -36,6 +36,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
   const slotHeight = useMotionValue(0);
   const slotRadius = useMotionValue(0);
   const dashboardOffset = useMotionValue(0);
+  const mobileDashboardOffset = useMotionValue(0);
 
   const morph = useTransform(scrollYProgress, (progress) => {
     const t = Math.min(1, Math.max(0, (progress - 0.06) / 0.36));
@@ -53,6 +54,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
 
   const slideProgress = useTransform(scrollYProgress, [0.56, 0.95], [0, 1]);
   const dashboardX = useTransform(() => dashboardOffset.get() * slideProgress.get());
+  const dashboardY = useTransform(() => mobileDashboardOffset.get() * slideProgress.get());
   const introOpacity = useTransform(scrollYProgress, [0.56, 0.74], [0, 1]);
   const introY = useTransform(scrollYProgress, [0.56, 0.85], [48, 0]);
 
@@ -71,7 +73,11 @@ export function GhostHeroExperience({ action }: { action: string }) {
       const stageBounds = stage.getBoundingClientRect();
       const originBounds = origin.getBoundingClientRect();
       const frame = slot.closest<HTMLElement>(".ghostDashboardFrame");
-      dashboardOffset.set(frame ? frame.offsetWidth / 2 : 0);
+      const stacked = stage.clientWidth <= 800;
+      dashboardOffset.set(frame && !stacked ? frame.offsetWidth / 2 : 0);
+      const mobileTop = window.innerHeight <= 720 ? 72 : 100;
+      const stickyOverflow = Math.max(0, stage.clientHeight - window.innerHeight);
+      mobileDashboardOffset.set(frame && stacked ? mobileTop + stickyOverflow - frame.offsetTop : 0);
       let slotX = 0;
       let slotY = 0;
       let element: HTMLElement | null = slot;
@@ -97,19 +103,19 @@ export function GhostHeroExperience({ action }: { action: string }) {
     observer.observe(origin);
     observer.observe(slot);
     return () => observer.disconnect();
-  }, [originTop, originWidth, originHeight, slotLeft, slotTop, slotWidth, slotHeight, slotRadius, dashboardOffset]);
+  }, [originTop, originWidth, originHeight, slotLeft, slotTop, slotWidth, slotHeight, slotRadius, dashboardOffset, mobileDashboardOffset]);
 
   return (
     <div ref={journeyRef} id="ghost-slide" className="ghostHeroJourney ghostHeroJourney--slide">
       <div ref={stageRef} className="ghostHeroStage" data-hero-active={heroActive || reducedMotion ? "true" : "false"}>
         <motion.div className="ghostRevealIntro" style={{ opacity: reducedMotion ? 1 : introOpacity, y: reducedMotion ? 0 : introY }}>
           <h2>
-            <GhostTextReveal progress={scrollYProgress} start={0.6}>Meet Ghost.</GhostTextReveal>
-            <GhostTextReveal progress={scrollYProgress} start={0.64}>See the threat.</GhostTextReveal>
-            <GhostTextReveal progress={scrollYProgress} start={0.68}>Make your move.</GhostTextReveal>
+            <GhostTextReveal progress={scrollYProgress} start={0.6}>Add an AI threat</GhostTextReveal>
+            <GhostTextReveal progress={scrollYProgress} start={0.64}>intelligence specialist</GhostTextReveal>
+            <GhostTextReveal progress={scrollYProgress} start={0.68}>to your cyber team.</GhostTextReveal>
           </h2>
-          <p><GhostTextReveal progress={scrollYProgress} start={0.74}>Ghost turns global threat activity, exposed credentials and emerging exploits into intelligence your team can act on.</GhostTextReveal></p>
-          <p><GhostTextReveal progress={scrollYProgress} start={0.8}>Get clear priorities, investigate what matters and move from a question to your next decision.</GhostTextReveal></p>
+          <p><GhostTextReveal progress={scrollYProgress} start={0.74}>Ghost connects threats to your environment, giving the Immortal Cyber Team the context to test, triage, investigate and respond.</GhostTextReveal></p>
+          <p><GhostTextReveal progress={scrollYProgress} start={0.8}>She explains priorities, secures breached accounts and feeds intelligence into machine-speed cyber defence.</GhostTextReveal></p>
         </motion.div>
         <div ref={originRef} className="ghostHeroMediaOrigin" aria-hidden="true" />
         <motion.section
@@ -129,7 +135,7 @@ export function GhostHeroExperience({ action }: { action: string }) {
           <div className="ghostCloneScroll">SCROLL TO EXPLORE</div>
         </motion.section>
 
-        <motion.div className="ghostDashboardMotion" style={reducedMotion ? undefined : { x: dashboardX }}>
+        <motion.div className="ghostDashboardMotion" style={reducedMotion ? undefined : { x: dashboardX, y: dashboardY }}>
         <motion.section
           className="ghostDashboardSection"
           aria-label="Ghost inside the Immortal console"

@@ -214,9 +214,9 @@
   pointer-events: none;
 }
 .ghostRevealIntro h2 {
-  max-width: 12ch;
+  max-width: 100%;
   margin: 0 0 24px;
-  font-size: clamp(36px, 4.8vw, 72px);
+  font-size: clamp(30px, 3.6vw, 54px);
   line-height: 1.04;
   letter-spacing: -.035em;
 }
@@ -225,7 +225,7 @@
 .ghostHeroJourney--slide .ghostDashboardMotion { transform-origin: center center; }
 @media (max-width: 560px) {
   .ghostHeroJourney--slide .ghostRevealIntro { max-width: 50%; padding-right: 12px; }
-  .ghostHeroJourney--slide .ghostRevealIntro h2 { font-size: 26px; }
+  .ghostHeroJourney--slide .ghostRevealIntro h2 { font-size: 22px; }
   .ghostHeroJourney--slide .ghostRevealIntro p { font-size: 13px; line-height: 1.5; }
   .ghostRevealIntro h2 { font-size: 36px; }
   .ghostRevealIntro p { font-size: 16px; }
@@ -240,3 +240,37 @@
 
 .ghostTextRevealMask { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
 .ghostTextRevealLine { display: block; }
+.ghostClonePage .ghostRevealIntro p,
+.ghostClonePage .ghostRevealIntro p * { font-weight: 400 !important; }
+.ghostClonePage .ghostRevealIntro p { font-size: 18px; }
+
+/* On narrow screens, lift the console above a full-width introduction. */
+@media (max-width: 800px) {
+  .ghostHeroJourney { --ghost-stage-height: max(100svh, 760px); }
+  .ghostDashboardFrame { width: calc(100vw - 40px); }
+  .ghostHeroJourney--slide .ghostRevealIntro {
+    top: calc(132px + (100vw - 40px) * 851 / 1769 + max(0px, 760px - 100svh));
+    bottom: auto;
+    max-width: 100%;
+    padding: 0 20px 28px;
+    justify-content: flex-start;
+  }
+  .ghostHeroJourney--slide .ghostRevealIntro h2 {
+    font-size: clamp(26px, 4.2vw, 34px);
+    margin-bottom: 18px;
+  }
+  .ghostClonePage .ghostRevealIntro p {
+    max-width: 48ch;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+}
+@media (max-width: 800px) and (max-height: 720px) {
+  .ghostHeroJourney--slide .ghostRevealIntro {
+    top: calc(104px + (100vw - 40px) * 851 / 1769 + max(0px, 760px - 100svh));
+  }
+}
+@media (max-width: 800px) and (prefers-reduced-motion: reduce) {
+  .ghostHeroJourney--slide .ghostRevealIntro { top: auto; }
+}
