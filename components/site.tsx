@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { GhostFaq } from "./ghost-faq";
+import { GhostVideoStory } from "./ghost-video-story";
+import { GhostPromptForm } from "./ghost-prompt-form";
 import { GhostHeroExperience } from "./ghost-hero-experience";
 import { HomeHero } from "./home-hero";
 import { HomeAgentGuide } from './home-agent-guide';
@@ -120,7 +123,7 @@ function FinalCTA({ image="/images/team.webp" }: {image?: string}) { return <sec
 
 const cards = Object.entries(specialists);
 export function HomePage() {
-  return <main><Header/><HomeHero/>
+  return <main className="homePage"><Header/><HomeHero background="video"/>
   <HomeAgentGuide/>
   <section className="whiteStatement"><GlitchCorners/><Reveal><h2>Traditional cyber security has lost the war.<br/><span>We have changed the battlefield.</span></h2></Reveal></section>
   <section className="imageStatement"><Image src="/images/team.webp" alt="Immortal city" fill sizes="100vw"/><div className="shade"/><div className="statementGrid">{[["The Talent Gap is Exploding","4 million cybersecurity jobs are unfilled while threat-actor groups multiply - leaving organizations exposed and unprepared."],["The Cost of Failure is Devastating","Single breaches now cost over $100M, pushing global cybercrime losses toward $10.5 Trillion annually."],["Traditional Defenses Can’t Keep Up","Immortal Cyber Teams deliver superhuman speed, intelligence, and 24/7 response - without hiring delays or resource limits."]].map((x,i)=><Reveal key={x[0]} delay={i*.12}><h3>{x[0]}</h3><p>{x[1]}</p></Reveal>)}</div></section>
@@ -135,7 +138,7 @@ export function HomePage() {
 export function SpecialistPage({slug}:{slug:string}) {
   const data = specialists[slug];
   if (slug === "intelligence-specialist") return <GhostPage data={data} />;
-  return <main style={{"--accent":data.accent} as any}><Header/><section className="specialistHero"><motion.div className="specialistImage" initial={{scale:1.08,filter:"blur(8px)"}} animate={{scale:1,filter:"blur(0px)"}} transition={{duration:1.2}}><Image src={`/images/${data.key}.png`} alt={`${data.name} ${data.role}`} fill priority sizes="100vw"/></motion.div><div className="dots">{data.capabilities.map((_:any,i:number)=><i key={i}/>)}</div><motion.div className="specialistTitle" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{delay:.45,duration:.75}}><h1>{data.name}</h1><h2>{data.role}</h2><div className="chat">Chat with {data.name[0]+data.name.slice(1).toLowerCase()} <span>◉</span></div><a href={consoleUrl} className="brief">⊙　{data.briefing}</a></motion.div></section>
+  return <main style={{"--accent":data.accent} as any}><Header/><section className="specialistHero"><motion.div className="specialistImage" initial={{scale:1.08,filter:"blur(8px)"}} animate={{scale:1,filter:"blur(0px)"}} transition={{duration:1.2}}><Image src={`/images/${data.key}.png`} alt={`${data.name} ${data.role}`} fill priority sizes="100vw"/></motion.div><div className="dots">{data.capabilities.map((_:any,i:number)=><i key={i}/>)}</div><motion.div className="specialistTitle" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{delay:.45,duration:.75}}><h1>{data.name}</h1><h2>{data.role}</h2><GhostPromptForm action={consoleUrl} agentName={data.name[0]+data.name.slice(1).toLowerCase()}/><a href={consoleUrl} className="brief">⊙　{data.briefing}</a></motion.div></section>
   <section className="who"><Reveal><small>WHO IS {data.name}</small><h2>Your {data.role} is here.</h2><p>{data.intro}</p><a className="btn accentBtn" href={consoleUrl}>Chat with {data.name[0]+data.name.slice(1).toLowerCase()}</a></Reveal></section>
   <section className="capIntro"><Reveal><small>CAPABILITIES</small><h2>Discover {data.name[0]+data.name.slice(1).toLowerCase()}’s<br/><span>{data.role} Capabilities</span></h2><p>Exceptional skills amplified by an unmatched cyber arsenal, available the moment your team needs them.</p></Reveal></section>
   <section className="capabilities">{data.capabilities.map((cap:string,i:number)=><Reveal key={cap} className="capability"><div className="capNo">{String(i+1).padStart(2,"0")}</div><div><small>CAPABILITY</small><h3>{cap}</h3><p>{cap} gives your team immediate, always-on coverage. Ask {data.name[0]+data.name.slice(1).toLowerCase()} to analyse the latest evidence, explain the risk in plain language, and recommend the next action.</p><a href={consoleUrl}>Open this capability ↗</a></div><motion.div className="orb" whileHover={{scale:1.12,rotate:10}}/></Reveal>)}</section>
@@ -150,43 +153,15 @@ const ghostAreas = [
   { id:"supply", number:"04", label:"Supply Chain Intelligence", kicker:"Monitor the third parties attackers may use to reach you.", summary:"Understand supplier, partner and third-party exposures before a breach becomes your problem.", actions:["Analyse our latest supply chain findings.","Show suppliers with leaked passwords or stealer infections.","Generate supplier remediation reports."], outputs:["Supply chain risk summaries","Third-party breach views","Credential exposure reports","Executive summaries"] },
 ];
 
-function getScrollScrubTime(progress:number,duration:number) {
-  const scrubProgress = Math.min(1,Math.max(0,(progress-.06)/.9));
-  return scrubProgress * Math.max(0,duration-.04);
-}
-
 function GhostPage({data}:{data:any}) {
   const [perfectCompact, setPerfectCompact] = useState(false);
-  const therapyRef = useRef<HTMLElement | null>(null);
-  const therapyVideoRef = useRef<HTMLVideoElement | null>(null);
-  const therapyVideoFrameRef = useRef<number | null>(null);
   const perfectRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress: therapyProgress } = useScroll({ target: therapyRef, offset: ["start start", "end end"] });
   const { scrollYProgress: perfectProgress } = useScroll({ target: perfectRef, offset: ["start start", "end end"] });
-  const therapyFirstY = useTransform(therapyProgress, [0, .22, .43, .58], ["500%", "0%", "0%", "-260%"]);
-  const therapyFirstOpacity = useTransform(therapyProgress, [0, .18, .46, .58], [0, 1, 1, 0]);
-  const therapySecondY = useTransform(therapyProgress, [.32, .52, .76, .92], ["500%", "0%", "0%", "-260%"]);
-  const therapySecondOpacity = useTransform(therapyProgress, [.32, .5, .78, .92], [0, 1, 1, 0]);
-  const therapyVideoScale = useTransform(therapyProgress, [0, 1], [1.06, 1]);
   const perfectBgY = useTransform(perfectProgress, [0, 1], ["3%", "-3%"]);
   const perfectWordScale = useTransform(perfectProgress, [0, .4], [1, perfectCompact ? 1 : .41]);
   const perfectLeftX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "-72vw" : "-30.3vw"]);
   const perfectRightX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "72vw" : "32.3vw"]);
   const perfectCardY = useTransform(perfectProgress, [0, .12, .62, 1], ["200%", "200%", perfectCompact ? "-45%" : "7%", perfectCompact ? "-45%" : "7%"]);
-  useMotionValueEvent(therapyProgress,"change",(progress) => {
-    const video = therapyVideoRef.current;
-    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
-    if (therapyVideoFrameRef.current !== null) cancelAnimationFrame(therapyVideoFrameRef.current);
-    therapyVideoFrameRef.current = requestAnimationFrame(() => {
-      video.pause();
-      const nextTime = getScrollScrubTime(progress,video.duration);
-      if (Math.abs(video.currentTime-nextTime) > 1/60) video.currentTime = nextTime;
-      therapyVideoFrameRef.current = null;
-    });
-  });
-  useEffect(() => () => {
-    if (therapyVideoFrameRef.current !== null) cancelAnimationFrame(therapyVideoFrameRef.current);
-  }, []);
   useEffect(() => {
     const compact = window.matchMedia("(max-width: 768px)");
     const updateCompact = () => setPerfectCompact(compact.matches);
@@ -194,24 +169,6 @@ function GhostPage({data}:{data:any}) {
     compact.addEventListener("change", updateCompact);
     return () => compact.removeEventListener("change", updateCompact);
   }, []);
-  const homeDesign = [
-    ["01", "Minimal footprint", "Deploy Ghost from the Immortal console without a hiring cycle or months of tooling work."],
-    ["02", "Plug & Play intelligence", "Start with Ghost's daily briefing, then expand into credentials, exploits and suppliers."],
-    ["03", "Low analyst load", "Let Ghost handle repetitive signal review so human teams can focus on decisions."],
-    ["04", "Discreet presence", "Ghost works quietly in the background and surfaces only what needs attention."],
-    ["05", "Flexible comfort", "Move from executive summaries to deep technical evidence whenever the moment demands it."],
-  ];
-  const comparisonRows = [
-    ["Warm-up time", "Instant briefing and live context", "Manual collection and delayed review", "Separate tools and analyst queues"],
-    ["Signal humidity", "Threats, credentials, exploits and suppliers in one picture", "Partial internal telemetry", "External feeds without business context"],
-    ["Aromatherapy", "Action prompts and explainable next steps", "Raw alerts and open tickets", "Reports that arrive after the pressure has passed"],
-    ["Space & mobility", "Available anywhere your team opens the console", "Requires staffing, shifts and handover", "Requires integration work and extra process"],
-  ];
-  const proofPoints = [
-    "Tracks global threat activity continuously and turns it into a daily intelligence rhythm.",
-    "Connects leaked credential exposure to the accounts and suppliers your team needs to secure.",
-    "Prioritises vulnerabilities by exploit activity and relevance instead of headline noise.",
-  ];
   const ghostTestimonials = [
     ["Security lead", "Ghost gives us the missing outside view. We see exposed credentials, exploit movement and supplier issues in one place before they turn into an emergency."],
     ["Risk manager", "The best part is the clarity. Ghost explains what matters, who is affected and what the business should do next."],
@@ -223,67 +180,7 @@ function GhostPage({data}:{data:any}) {
     <GhostHeroExperience action={consoleUrl}/>
 
     <AgentsSection/>
-
-    <motion.section ref={therapyRef} className="ghostCloneTherapy" aria-label="Ghost immediate action">
-      <div className="ghostCloneTherapyTop">
-        <p><span className="ghostCloneLineParent"><span className="ghostCloneLineChild">Improve security while relaxing the team</span></span></p>
-        <h2>
-          <span className="ghostCloneLineParent"><span className="ghostCloneLineChild">Safe intelligence</span></span>
-          <span className="ghostCloneLineParent"><span className="ghostCloneLineChild">with immediate action</span></span>
-        </h2>
-      </div>
-      <div className="ghostCloneTherapyPin">
-        <motion.video ref={therapyVideoRef} className="ghostCloneTherapyVideo" style={{scale:therapyVideoScale}} muted playsInline preload="auto" aria-hidden="true" onLoadedMetadata={(event) => {
-          const video = event.currentTarget;
-          video.pause();
-          video.currentTime = getScrollScrubTime(therapyProgress.get(),video.duration);
-        }}>
-          <source src="/videos/ghost-secure-breached-accounts.webm" type="video/webm"/>
-        </motion.video>
-        <div className="ghostCloneTherapyShade"/>
-        <motion.article className="ghostCloneTherapyCallout ghostCloneTherapyCalloutLeft" style={{y:therapyFirstY,opacity:therapyFirstOpacity}}>
-          <span>01</span>
-          <div><h3>Adjustable depth</h3><p>Move from a concise executive briefing to deep evidence, indicators, assets and supplier context.</p></div>
-        </motion.article>
-        <motion.article className="ghostCloneTherapyCallout ghostCloneTherapyCalloutRight" style={{y:therapySecondY,opacity:therapySecondOpacity}}>
-          <span>02</span>
-          <div><h3>Breathe easy</h3><p>Ghost keeps the signal clear so teams can avoid panic, noise and heat-induced decision fatigue.</p></div>
-        </motion.article>
-      </div>
-    </motion.section>
-
-    <section className="ghostCloneDesigned">
-      <div className="ghostCloneDesignedHead">
-        <h5>Designed for security teams</h5>
-      </div>
-      <div className="ghostCloneSpecGrid">
-        {homeDesign.map((item)=><article key={item[0]}>
-          <h5>{item[0]} {item[1]}</h5>
-          <h3>{item[2]}</h3>
-        </article>)}
-      </div>
-    </section>
-
-    <section className="ghostCloneCompare">
-      <div className="ghostCloneCompareHead">
-        <h2>Why Ghost intelligence stands out</h2>
-        <a href={consoleUrl}>Learn more about Ghost</a>
-      </div>
-      <div className="ghostCloneTable" role="table" aria-label="Ghost comparison table">
-        <div className="ghostCloneTableHead" role="row"><div>Features</div><div>Ghost</div><div>Traditional SOC</div><div>Point tools</div></div>
-        {comparisonRows.map((row)=><div className="ghostCloneTableRow" role="row" key={row[0]}>{row.map((cell)=><div key={cell}>{cell}</div>)}</div>)}
-      </div>
-    </section>
-
-    <section className="ghostCloneUse">
-      <div>
-        <h2>Created for long-term use</h2>
-        <p>Ghost is suitable for daily intelligence practice and designed to support security, risk and executive teams with clear, repeatable outputs.</p>
-      </div>
-      <div className="ghostCloneUseGrid">
-        {proofPoints.map((point,index)=><article key={point}><span>{String(index+1).padStart(2,"0")}</span><p>{point}</p></article>)}
-      </div>
-    </section>
+    <GhostVideoStory/>
 
     <section className="ghostCloneTestimonials">
       <div className="ghostCloneTestImage"><Image src="/images/ghost.png" alt="" fill sizes="(max-width: 900px) 100vw, 42vw"/></div>
@@ -317,6 +214,7 @@ function GhostPage({data}:{data:any}) {
       </motion.div>
       </div>
     </motion.section>
+    <GhostFaq/>
     <Footer/>
   </main>
 }

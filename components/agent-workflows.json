@@ -1,0 +1,272 @@
+[
+  {
+    "id": "ghost",
+    "name": "Ghost",
+    "title": "Intelligence Specialist",
+    "description": "Track global threats, reveal exposed credentials and connect emerging risks to your organisation.",
+    "video": "8aQzmsR5av4",
+    "groups": [
+      {
+        "title": "Reveal the threats that matter",
+        "items": [
+          {
+            "title": "Global threat intelligence",
+            "description": "Monitor threat actors, malware, campaigns, vulnerabilities and exploits across the global threat landscape."
+          },
+          {
+            "title": "Dark web exposures",
+            "description": "Identify leaked credentials, stealer malware infections and threat actor leaks affecting your organisation."
+          },
+          {
+            "title": "Supply chain monitoring",
+            "description": "Track third-party breaches, exposed domains and vulnerable technologies across your supplier ecosystem."
+          }
+        ]
+      },
+      {
+        "title": "Turn intelligence into action",
+        "items": [
+          {
+            "title": "Secure breached accounts",
+            "description": "Identify compromised accounts and reduce the risk of stolen credentials being used against your team."
+          },
+          {
+            "title": "Context for your cyber team",
+            "description": "Share intelligence that supports penetration testing, detection triage, investigations and incident response."
+          },
+          {
+            "title": "Dashboards and reports",
+            "description": "Bring threat activity, exposure trends and recommended actions together in tailored intelligence reports."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/update-art.webp",
+    "poster": "/images/immortal-videos/ghost.jpg"
+  },
+  {
+    "id": "spectre",
+    "name": "Spectre",
+    "title": "Penetration Tester",
+    "description": "Uncover exploitable weaknesses, validate real attack paths and prioritise the risks that matter.",
+    "video": "RIpw1_FxpB4",
+    "groups": [
+      {
+        "title": "Test your defences continuously",
+        "items": [
+          {
+            "title": "External and internal testing",
+            "description": "Test exposed services, infrastructure and internal networks with scheduled and on-demand penetration testing."
+          },
+          {
+            "title": "Applications, APIs and code",
+            "description": "Find exploitable weaknesses across applications, APIs and source code."
+          },
+          {
+            "title": "Accounts and credentials",
+            "description": "Explore how compromised credentials and account weaknesses can open paths into your environment."
+          }
+        ]
+      },
+      {
+        "title": "Validate real business risk",
+        "items": [
+          {
+            "title": "Attack path validation",
+            "description": "Confirm exploitability and show how weaknesses can be chained together by an attacker."
+          },
+          {
+            "title": "Remediation priorities",
+            "description": "Use exploitation evidence, affected systems and business impact to focus remediation."
+          },
+          {
+            "title": "Testing dashboards",
+            "description": "Track exploitable hosts, exposed services, successful attacks and remediation priorities."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/design-art.webp",
+    "poster": "/images/immortal-videos/spectre.jpg"
+  },
+  {
+    "id": "pulse",
+    "name": "Pulse",
+    "title": "Security Operations Specialist",
+    "description": "Monitor your environment, triage detections and escalate confirmed malicious activity at machine speed.",
+    "video": "H6fuygmjj-I",
+    "groups": [
+      {
+        "title": "Monitor and triage around the clock",
+        "items": [
+          {
+            "title": "Continuous monitoring",
+            "description": "Monitor endpoints, cloud platforms, identity providers, email, firewalls, VPNs and network sources."
+          },
+          {
+            "title": "Detection triage",
+            "description": "Correlate events and assess context to distinguish suspicious activity from routine noise."
+          },
+          {
+            "title": "Reduce ticket backlogs",
+            "description": "Resolve detections that are not suspicious after triage, keeping queues focused on real risk."
+          }
+        ]
+      },
+      {
+        "title": "Move confirmed threats into response",
+        "items": [
+          {
+            "title": "Incident escalation",
+            "description": "Send confirmed malicious activity to Hex for investigation, containment and response."
+          },
+          {
+            "title": "Operational dashboards",
+            "description": "See detections, users, assets, cases, event sources and escalation outcomes in tailored views."
+          },
+          {
+            "title": "Human oversight",
+            "description": "Keep your team informed about what was resolved, escalated and what actions remain."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/new-sites-art.webp",
+    "poster": "/images/immortal-videos/pulse.jpg"
+  },
+  {
+    "id": "hex",
+    "name": "Hex",
+    "title": "Incident Responder",
+    "description": "Investigate confirmed threats, capture forensic evidence and contain breaches before they spread.",
+    "video": "q4oL2lv7TsQ",
+    "groups": [
+      {
+        "title": "Reconstruct what happened",
+        "items": [
+          {
+            "title": "Incident investigation",
+            "description": "Analyse case details, affected systems, users and historical activity to reconstruct attacker behaviour."
+          },
+          {
+            "title": "Forensic evidence",
+            "description": "Collect endpoint artefacts, system activity, network evidence and chain-of-custody records."
+          },
+          {
+            "title": "Environment-wide hunting",
+            "description": "Search endpoints, users and historical activity for indicators of compromise in the Immortal Data Lake."
+          }
+        ]
+      },
+      {
+        "title": "Contain the incident",
+        "items": [
+          {
+            "title": "Contain active threats",
+            "description": "Isolate affected machines and secure breached accounts to limit attacker access and impact."
+          },
+          {
+            "title": "Map attacker techniques",
+            "description": "Connect incident evidence to MITRE ATT&CK techniques and the sequence of attacker activity."
+          },
+          {
+            "title": "Response visibility",
+            "description": "Track affected hosts, evidence, containment outcomes and the actions that remain for your team."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/migrate-art.webp",
+    "poster": "/images/immortal-videos/hex.jpg"
+  },
+  {
+    "id": "pandora",
+    "name": "Pandora",
+    "title": "GRC Specialist",
+    "description": "Find compliance gaps, validate security controls and turn complex requirements into clear action.",
+    "video": "TBUty7de5TY",
+    "groups": [
+      {
+        "title": "Understand your compliance position",
+        "items": [
+          {
+            "title": "Security gap analysis",
+            "description": "Compare policies, controls and processes against security standards to identify compliance gaps."
+          },
+          {
+            "title": "Technical control validation",
+            "description": "Review configurations and control effectiveness to check that security measures work as intended."
+          },
+          {
+            "title": "Third-party risk",
+            "description": "Assess vendor security and supply chain exposure to reveal risks beyond your own environment."
+          }
+        ]
+      },
+      {
+        "title": "Simplify governance and reporting",
+        "items": [
+          {
+            "title": "Documentation and questionnaires",
+            "description": "Organise security documentation, draft policies and prepare consistent questionnaire responses."
+          },
+          {
+            "title": "Framework mapping and data classification",
+            "description": "Map controls across security frameworks and classify information by sensitivity and business context."
+          },
+          {
+            "title": "GRC reporting",
+            "description": "Consolidate risk, compliance and security metrics so your team can track progress and prepare for audits."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/responsive-art.webp",
+    "poster": "/images/immortal-videos/pandora.jpg"
+  },
+  {
+    "id": "link",
+    "name": "Link",
+    "title": "Security Engineer",
+    "description": "Discover IT, cloud and OT assets, reveal vulnerabilities and keep your environment up to date.",
+    "video": "JldYNGb-ATo",
+    "groups": [
+      {
+        "title": "See your complete asset estate",
+        "items": [
+          {
+            "title": "IT and cloud discovery",
+            "description": "Map systems, cloud resources, software, services, network ranges and unknown assets across your fleet."
+          },
+          {
+            "title": "OT asset visibility",
+            "description": "Discover OT devices, exposed services and software versions, with lightweight vulnerability identification."
+          },
+          {
+            "title": "Real-time vulnerability context",
+            "description": "Map software versions against vulnerability and exploit intelligence from Ghost."
+          }
+        ]
+      },
+      {
+        "title": "Strengthen your environment",
+        "items": [
+          {
+            "title": "Cloud security posture",
+            "description": "Review AWS, Azure, GCP and Microsoft 365 for misconfigurations, risky permissions and control gaps."
+          },
+          {
+            "title": "Patching and upgrades",
+            "description": "Update operating systems, endpoint agents and rulesets to reduce avoidable exposure."
+          },
+          {
+            "title": "Engineering dashboards",
+            "description": "Bring asset inventories, OT discovery, vulnerability insights and cloud posture into remediation planning."
+          }
+        ]
+      }
+    ],
+    "image": "/images/agent-workflows/components-art.webp",
+    "poster": "/images/immortal-videos/link.jpg"
+  }
+]
