@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import faqs from "./ghost-faq-data.json";
 import styles from "./ghost-faq.module.css";
+import { ScrollReveal } from "./scroll-reveal";
 
 export function GhostFaq() {
   const [open, setOpen] = useState<number | null>(null);
@@ -11,11 +12,13 @@ export function GhostFaq() {
 
   return <section id="ghost-faq" className={styles.section} aria-labelledby="ghost-faq-heading">
     <div className={styles.inner}>
-      <header className={styles.heading}>
+      <ScrollReveal className={styles.heading}>
         <h2 id="ghost-faq-heading">Frequently Asked Questions (FAQs)</h2>
-      </header>
+      </ScrollReveal>
       <div className={styles.accordion}>
-        {faqs.map(({ question, answer }, index) => <article key={question} className={styles.item}
+        {faqs.map(({ question, answer }, index) => <motion.article key={question} className={styles.item} data-scroll-reveal
+          initial={reducedMotion ? false : { opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: .2 }} transition={{ duration: reducedMotion ? 0 : .6 }}
           onPointerEnter={event => {
             const bounds = event.currentTarget.getBoundingClientRect();
             event.currentTarget.dataset.entry = event.clientY < bounds.top + bounds.height / 2 ? "top" : "bottom";
@@ -38,7 +41,7 @@ export function GhostFaq() {
               <p>{answer}</p>
             </motion.div>}
           </AnimatePresence>
-        </article>)}
+        </motion.article>)}
       </div>
     </div>
   </section>;

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import workflowData from "./agent-workflows.json";
 import styles from "./home-agent-guide.module.css";
+import { ScrollReveal } from "./scroll-reveal";
 
 type Workflow = {
   id: string;
@@ -46,7 +47,9 @@ function ScrollStackPanel({ children, className, last = false }: { children: Rea
 
   return <>
     <div ref={markerRef} className={styles.stackMarker} aria-hidden="true"/>
-    <motion.div ref={panelRef} className={className} style={reducedMotion || last ? undefined : { scale }}>
+    <motion.div ref={panelRef} className={className} data-scroll-reveal style={reducedMotion || last ? undefined : { scale }}
+      initial={reducedMotion ? false : { opacity: 0 }} whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: .15 }} transition={{ duration: reducedMotion ? 0 : .65 }}>
       {children}
     </motion.div>
   </>;
@@ -63,12 +66,12 @@ function WorkflowBlock({ workflow }: { workflow: Workflow }) {
   }, [videoVisible]);
 
   return <div id={`agent-${workflow.id}`} data-agent-workflow={workflow.id} className={styles.workflow}>
-    <motion.aside className={styles.styleCard}
+    <motion.aside className={styles.styleCard} data-scroll-reveal
       initial={reducedMotion ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }}
       transition={{ duration: .55 }}>
       <Image src={workflow.image} alt="" fill sizes="(max-width: 800px) 100vw, 400px"/>
-      <div><span className={styles.name}>{workflow.name}</span><h3>{workflow.title}</h3><p>{workflow.description}</p></div>
+      <ScrollReveal delay={.1}><span className={styles.name}>{workflow.name}</span><h3>{workflow.title}</h3><p>{workflow.description}</p></ScrollReveal>
     </motion.aside>
     <div className={styles.content}>
       <ScrollStackPanel className={styles.videoFrame}>
@@ -97,15 +100,17 @@ export function HomeAgentGuide() {
   const reducedMotion = useReducedMotion();
   return <section id="agent-guide" className={styles.section} aria-labelledby="agent-guide-heading">
     <div className={styles.inner}>
-      <motion.header className={styles.intro} initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+      <motion.header className={styles.intro} data-scroll-reveal initial={reducedMotion ? false : { opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .4 }} transition={{ duration: .65 }}>
         <h2 id="agent-guide-heading">Six Immortals.<br/> One cyber team.</h2>
       </motion.header>
-      <nav className={styles.topics} aria-label="Immortal Cyber Team">
+      <motion.nav className={styles.topics} data-scroll-reveal aria-label="Immortal Cyber Team"
+        initial={reducedMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: .2 }} transition={{ duration: reducedMotion ? 0 : .7 }}>
         {workflows.map(workflow => <a href={`#agent-${workflow.id}`} key={workflow.id}>
           <span className={styles.icon}>{workflow.name}</span><span>{workflow.title}</span>
         </a>)}
-      </nav>
+      </motion.nav>
       {workflows.map(workflow => <WorkflowBlock key={workflow.id} workflow={workflow}/>)}
     </div>
   </section>;

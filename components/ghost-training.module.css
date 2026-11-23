@@ -1,0 +1,39 @@
+.certification, .training { background: #070d11; color: #fff; padding-inline: var(--content-inset); scroll-margin-top: 90px; }
+.certification { padding-block: 110px 90px; }
+.certificationLayout, .trainingLayout { max-width: 1440px; margin-inline: auto; display: grid; gap: 48px; align-items: center; }
+.certificationLayout { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+.certification h2, .training h2 { margin: 0; font-size: clamp(34px, 3.8vw, 56px); line-height: 1.12; letter-spacing: -.025em; }
+.certification p, .training p { margin: 20px 0 0; font-size: 18px; line-height: 1.55; color: #c3ccd2; }
+.certificationCopy { max-width: 860px; }
+.badge { width: min(100%, 410px); justify-self: center; }
+.badge img { display: block; width: 100%; height: auto; }
+.training { padding-block: 40px 110px; }
+.trainingLayout { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); align-items: start; }
+.trainingVisual { position: sticky; top: 100px; min-width: 0; max-height: calc(100svh - 120px); aspect-ratio: .78; border-radius: 12px 12px 12px 0; overflow: hidden; background: #141414; }
+.trainingVisual img { object-fit: cover; object-position: center; }
+.trainingCopy { min-width: 0; }
+.login { margin-top: 28px; }
+.topics { list-style: none; margin: 28px 0 0; padding: 0; }
+.topics li { border-top: 1px solid #7f909b70; }
+.topics li:last-child { border-bottom: 1px solid #7f909b70; }
+.topics li > div { display: flex; gap: 14px; align-items: center; padding-block: 15px; font-size: 20px; line-height: 1.35; }
+.medal { flex: 0 0 26px; height: 26px; background: #e554ff; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.trainingAction { padding-top: 12px; }
+.start { margin-top: 20px; max-width: 100%; text-align: center; }
+.training a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 4px; }
+@media (max-width: 1000px) {
+  .certificationLayout, .trainingLayout { gap: 32px; }
+  .certificationLayout { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .topics li > div { font-size: 18px; }
+}
+@media (max-width: 800px) {
+  .certification { padding-block: 72px 56px; }
+  .certificationLayout, .trainingLayout { grid-template-columns: 1fr; gap: 36px; }
+  .badge { width: min(72%, 320px); }
+  .training { padding-block: 16px 72px; }
+  .trainingVisual { position: relative; top: auto; aspect-ratio: 1; }
+  .certification h2, .training h2 { font-size: 34px; }
+  .certification p, .training p { font-size: 16px; }
+  .topics li > div { gap: 12px; font-size: 18px; }
+  .medal { flex-basis: 22px; height: 22px; }
+}

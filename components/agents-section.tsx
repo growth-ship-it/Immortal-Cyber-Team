@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styles from "./agents-section.module.css";
+import { ScrollReveal } from "./scroll-reveal";
 
 const consoleUrl = "https://console.immortals.co/";
 
@@ -63,14 +64,16 @@ function VideoPlaceholder({ title, index }: { title: string; index: number }) {
 function AgentConversation({ active }: { active: number }) {
   const reducedMotion = useReducedMotion();
   const capability = capabilities[active];
-  return <aside className={styles.conversation} aria-label="Example questions for Ghost">
+  return <motion.aside className={styles.conversation} aria-label="Example questions for Ghost" data-scroll-reveal
+    initial={reducedMotion ? false : { opacity: 0 }} whileInView={{ opacity: 1 }}
+    viewport={{ once: true, amount: .15 }} transition={{ duration: reducedMotion ? 0 : .6 }}>
     <AnimatePresence mode="wait" initial={false}><motion.div key={active} className={styles.conversationContent} initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .25 }}>
       <div className={styles.prompt}><span className={styles.questionLabel}>Example question</span>{capability.prompt}</div>
       <p className={styles.responseLabel}>Ghost helps your team</p>
       <motion.div className={styles.agentResult} initial={{ opacity: reducedMotion ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ delay: reducedMotion ? 0 : .35, duration: .4 }}><p>{capability.response}</p><h4>Outputs</h4><ul>{capability.outputs.map(output => <li key={output}>{output}</li>)}</ul></motion.div>
     </motion.div></AnimatePresence>
     <a className={styles.composer} href={consoleUrl}>Chat with Ghost <Arrow/></a>
-  </aside>;
+  </motion.aside>;
 }
 
 const supplyDetails = {
@@ -84,7 +87,7 @@ const supplyTabs = Object.keys(supplyDetails) as SupplyTab[];
 function SupplyChainPanel() {
   const [tab, setTab] = useState<SupplyTab>("Coverage");
   const capability = capabilities[3];
-  return <div className={styles.supplyChain} id={`agents-${capability.id}`}>
+  return <ScrollReveal className={styles.supplyChain} id={`agents-${capability.id}`}>
     <div className={styles.supplyFeature}>
       <VideoPlaceholder title={capability.title} index={3}/>
       <div className={styles.supplyCopy}><h3>{capability.title}</h3><p>{capability.description}</p></div>
@@ -104,11 +107,14 @@ function SupplyChainPanel() {
       </div>
       <a className={styles.detailCta} href={consoleUrl}>Chat with Ghost <Arrow/></a>
     </div>
-  </div>;
+  </ScrollReveal>;
 }
 
 export function AgentsSection() {
   const [active, setActive] = useState(0);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: headingProgress } = useScroll({ target: headingRef, offset: ["start 92%", "start 35%"] });
+  const backgroundOpacity = useTransform(headingProgress, [0, 1], [0, 1]);
   const featureRefs = useRef<Array<HTMLElement | null>>([]);
   const reducedMotion = useReducedMotion();
   useEffect(() => {
@@ -135,29 +141,30 @@ export function AgentsSection() {
 
   return <section id="agents" className={styles.section} aria-labelledby="agents-heading">
     <div className={styles.inner}>
-      <motion.div className={styles.heading}
+      <motion.div ref={headingRef} className={styles.heading}
         initial={reducedMotion ? false : "hidden"}
         whileInView="visible"
         viewport={{ amount: .4, once: true }}>
+        <motion.div className={styles.headingBackground} aria-hidden="true" style={{ opacity: reducedMotion ? 1 : backgroundOpacity }}/>
         <h2 id="agents-heading">
           {["Discover Ghost’s", "intelligence capabilities"].map((line, index) => <span className={styles.headingMask} key={line}>
-            <motion.span className={styles.headingLine}
+            <motion.span className={styles.headingLine} data-scroll-reveal
               variants={{ hidden: { y: "110%", opacity: 0 }, visible: { y: 0, opacity: 1 } }}
               transition={{ duration: reducedMotion ? 0 : .7, delay: reducedMotion ? 0 : index * .12, ease: [.2, .8, .2, 1] }}>
               {line}
             </motion.span>
           </span>)}
         </h2>
-        <motion.a className={styles.startButton} href={consoleUrl}
+        <motion.a className={styles.startButton} href={consoleUrl} data-scroll-reveal
           variants={{ hidden: { y: 14, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
           transition={{ duration: reducedMotion ? 0 : .5, delay: reducedMotion ? 0 : .25 }}>
           Chat with Ghost
         </motion.a>
       </motion.div>
       <div className={styles.layout}>
-        <div className={styles.features}>{capabilities.slice(0, 3).map((capability, i) => <motion.article key={capability.id} id={`agents-${capability.id}`} ref={el => { featureRefs.current[i] = el; }} className={styles.feature} initial={{ opacity: reducedMotion ? 1 : .2, x: reducedMotion ? 0 : -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: .25, once: true }} transition={{ duration: .65, ease: [.2, .8, .2, 1] }}>
+        <div className={styles.features}>{capabilities.slice(0, 3).map((capability, i) => <motion.article key={capability.id} id={`agents-${capability.id}`} ref={el => { featureRefs.current[i] = el; }} className={styles.feature} data-scroll-reveal initial={reducedMotion ? false : { opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: .15, once: true }} transition={{ duration: .65, ease: [.2, .8, .2, 1] }}>
           <VideoPlaceholder title={capability.title} index={i}/>
-          <div className={styles.featureFooter}><div><h3>{capability.title}</h3><p>{capability.description}</p></div><a href={consoleUrl}>Chat with Ghost <Arrow/></a></div>
+          <ScrollReveal className={styles.featureFooter}><div><h3>{capability.title}</h3><p>{capability.description}</p></div><a href={consoleUrl}>Chat with Ghost <Arrow/></a></ScrollReveal>
         </motion.article>)}</div>
         <AgentConversation active={active}/>
       </div>
