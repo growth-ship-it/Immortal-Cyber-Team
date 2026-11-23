@@ -275,3 +275,20 @@
 @media (max-width: 800px) and (prefers-reduced-motion: reduce) {
   .ghostHeroJourney--slide .ghostRevealIntro { top: auto; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ghostTextRevealLine { opacity: 1 !important; transform: none !important; }
+}
+
+/* Keep the slide introduction readable on landscape phones and short tablets. */
+@media (min-width: 801px) and (max-width: 1100px) and (max-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .ghostHeroJourney--slide .ghostRevealIntro {
+    justify-content: flex-start;
+    padding-top: calc(max(0px, 680px - 100svh) + 80px);
+    padding-bottom: 16px;
+  }
+  .ghostHeroJourney--slide .ghostRevealIntro h2 { font-size: 26px; margin-bottom: 16px; }
+  .ghostClonePage .ghostRevealIntro p { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
+  .ghostDashboardFrame { width: min(90vw, calc((100svh - 96px) * 1769 / 851)); }
+  .ghostDashboardSection { align-items: start; padding-top: calc(max(0px, 680px - 100svh) + 80px); padding-bottom: 16px; }
+}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import styles from "./home-hero.module.css";
+import { ScrollReveal } from "./scroll-reveal";
 
 const partners = [
   ["superloop", "Superloop"],
@@ -59,7 +60,7 @@ export function HomeHero({ background = "image" }: { background?: "image" | "vid
         <Image src="/images/normal-ict-hero.webp" alt="" fill priority sizes="(max-width: 700px) 100vw, 700px" className={styles.portrait}/>
       </div>}
     </div>
-    <div className={styles.copy}>
+    <ScrollReveal className={styles.copy}>
       <Heading id={headingId} className={isVideo ? styles.logoHeading : styles.title}>
         {isVideo ? <Image src="/images/home-hero-logo.svg" alt="Immortal Cyber Teams" width={430} height={150} priority/> : <>Your cyber team.<br/><span>Beyond human limits.</span></>}
       </Heading>
@@ -85,7 +86,7 @@ export function HomeHero({ background = "image" }: { background?: "image" | "vid
           </div>
         </div>
       </div>
-    </div>
+    </ScrollReveal>
     {isVideo && <aside className={styles.isoBadge} aria-label="ISO 27001 Certified">
       <p>We are ISO<br/>27001 Certified</p>
       <Image src="/images/iso-27001.png" alt="" width={60} height={60}/>

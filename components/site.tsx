@@ -2,16 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GhostFaq } from "./ghost-faq";
-import { GhostVideoStory } from "./ghost-video-story";
 import { GhostPromptForm } from "./ghost-prompt-form";
 import { GhostHeroExperience } from "./ghost-hero-experience";
 import { HomeHero } from "./home-hero";
 import { HomeAgentGuide } from './home-agent-guide';
 import { AgentsSection } from "./agents-section";
+import { ScrollReveal } from "./scroll-reveal";
+import { GhostTraining } from "./ghost-training";
 
 const consoleUrl = "https://console.immortals.co/";
 
@@ -112,12 +113,13 @@ export function Header() {
   </header>;
 }
 function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) {
-  return <motion.div className={className} initial={{opacity:0,y:35}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:"-80px"}} transition={{duration:.75,delay,ease:[.2,.8,.2,1]}}>{children}</motion.div>;
+  const reducedMotion = useReducedMotion();
+  return <motion.div className={className} data-scroll-reveal initial={reducedMotion ? false : {opacity:0,y:35}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:"-80px"}} transition={{duration:reducedMotion ? 0 : .75,delay:reducedMotion ? 0 : delay,ease:[.2,.8,.2,1]}}>{children}</motion.div>;
 }
 
 function GlitchCorners() { return <div className="glitch" aria-hidden><i/><i/><i/><i/><b/><b/><b/><b/></div>; }
 
-export function Footer() { return <footer className="footer-section"><div className="footerInner"><div className="footerImmortalTop"><div className="footerBrandBlock"><div><Link href="/" className="footerLogoLink"><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={134} height={44}/></Link><p>Imagine limitless resources, skills and capabilities with Immortal Cyber Teams.</p></div><Image className="footerBadge" src="/images/footer/footer-badge.png" alt="" width={125} height={126}/></div><div className="footerMenus"><div><h4>Immortals</h4>{Object.entries(specialists).map(([s,d])=><Link key={s} href={`/${s}`}>{d.role}</Link>)}</div><div><h4>Company</h4><Link href="/pricing">Pricing</Link><Link href="/about-us">About Us</Link><Link href="/terms-of-use">Terms of Use</Link><Link href="/privacy-policy">Privacy Policy</Link></div></div></div><div className="footerLine"/><div className="footerBottom"><p>© 2025 Immortal Cyber Teams. All rights reserved.</p><div className="footerSocial"><a href="https://x.com/immortalscyber" target="_blank" rel="noreferrer" aria-label="Immortal on X"><img src="/images/footer/x-icon.svg" alt=""/></a><a href="https://www.linkedin.com/company/immortal-cyber-teams/" target="_blank" rel="noreferrer" aria-label="Immortal on LinkedIn"><img src="/images/footer/linkedin-icon.svg" alt=""/></a><a href="https://www.facebook.com/profile.php?id=61575775053325" target="_blank" rel="noreferrer" aria-label="Immortal on Facebook"><img src="/images/footer/facebook-icon.svg" alt=""/></a><a href="https://www.youtube.com/@ImmortalCyberTeams" target="_blank" rel="noreferrer" aria-label="Immortal on YouTube"><img src="/images/footer/youtube-icon.svg" alt=""/></a></div></div></div></footer> }
+export function Footer() { return <footer className="footer-section"><ScrollReveal className="footerInner"><div className="footerImmortalTop"><div className="footerBrandBlock"><div><Link href="/" className="footerLogoLink"><Image src="/images/logo.svg" alt="Immortal Cyber Teams" width={134} height={44}/></Link><p>Imagine limitless resources, skills and capabilities with Immortal Cyber Teams.</p></div><Image className="footerBadge" src="/images/footer/footer-badge.png" alt="" width={125} height={126}/></div><div className="footerMenus"><div><h4>Immortals</h4>{Object.entries(specialists).map(([s,d])=><Link key={s} href={`/${s}`}>{d.role}</Link>)}</div><div><h4>Company</h4><Link href="/pricing">Pricing</Link><Link href="/about-us">About Us</Link><Link href="/terms-of-use">Terms of Use</Link><Link href="/privacy-policy">Privacy Policy</Link></div></div></div><div className="footerLine"/><div className="footerBottom"><p>© 2025 Immortal Cyber Teams. All rights reserved.</p><div className="footerSocial"><a href="https://x.com/immortalscyber" target="_blank" rel="noreferrer" aria-label="Immortal on X"><img src="/images/footer/x-icon.svg" alt=""/></a><a href="https://www.linkedin.com/company/immortal-cyber-teams/" target="_blank" rel="noreferrer" aria-label="Immortal on LinkedIn"><img src="/images/footer/linkedin-icon.svg" alt=""/></a><a href="https://www.facebook.com/profile.php?id=61575775053325" target="_blank" rel="noreferrer" aria-label="Immortal on Facebook"><img src="/images/footer/facebook-icon.svg" alt=""/></a><a href="https://www.youtube.com/@ImmortalCyberTeams" target="_blank" rel="noreferrer" aria-label="Immortal on YouTube"><img src="/images/footer/youtube-icon.svg" alt=""/></a></div></div></ScrollReveal></footer> }
 
 function FinalCTA({ image="/images/team.webp" }: {image?: string}) { return <section className="finalCta"><div><Reveal><h2>Imagine Limitless Cyber Defence with the Immortal Cyber Team on Your Side.</h2><a className="btn lightBtn" href={consoleUrl}>Create Free Account</a></Reveal></div><Image src={image} alt="Immortal Cyber Team" fill sizes="100vw"/></section> }
 
@@ -148,14 +150,16 @@ const ghostAreas = [
 ];
 
 function GhostPage({data}:{data:any}) {
+  const reducedMotion = useReducedMotion();
   const [perfectCompact, setPerfectCompact] = useState(false);
   const perfectRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress: perfectProgress } = useScroll({ target: perfectRef, offset: ["start start", "end end"] });
   const perfectBgY = useTransform(perfectProgress, [0, 1], ["3%", "-3%"]);
+  const perfectShadeOpacity = useTransform(perfectProgress, [0, .08, .62], [1, 1, 0]);
   const perfectWordScale = useTransform(perfectProgress, [0, .4], [1, perfectCompact ? 1 : .41]);
   const perfectLeftX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "-72vw" : "-30.3vw"]);
   const perfectRightX = useTransform(perfectProgress, [0, .4], ["0vw", perfectCompact ? "72vw" : "32.3vw"]);
-  const perfectCardY = useTransform(perfectProgress, [0, .12, .62, 1], ["200%", "200%", perfectCompact ? "-45%" : "7%", perfectCompact ? "-45%" : "7%"]);
+  const perfectCardY = useTransform(perfectProgress, [0, .12, .62, 1], ["200%", "200%", perfectCompact ? "0%" : "7%", perfectCompact ? "0%" : "7%"]);
   useEffect(() => {
     const compact = window.matchMedia("(max-width: 768px)");
     const updateCompact = () => setPerfectCompact(compact.matches);
@@ -163,48 +167,38 @@ function GhostPage({data}:{data:any}) {
     compact.addEventListener("change", updateCompact);
     return () => compact.removeEventListener("change", updateCompact);
   }, []);
-  const ghostTestimonials = [
-    ["Security lead", "Ghost gives us the missing outside view. We see exposed credentials, exploit movement and supplier issues in one place before they turn into an emergency."],
-    ["Risk manager", "The best part is the clarity. Ghost explains what matters, who is affected and what the business should do next."],
-    ["SOC analyst", "It feels like having a senior intelligence analyst watching the horizon while the team handles the live queue."],
-  ];
 
   return <main id="top" className="ghostClonePage" style={{"--accent":data.accent} as any}>
     <Header/>
     <GhostHeroExperience action={consoleUrl}/>
 
     <AgentsSection/>
-    <GhostVideoStory/>
 
-    <section className="ghostCloneTestimonials">
-      <div className="ghostCloneTestImage"><Image src="/images/ghost.png" alt="" fill sizes="(max-width: 900px) 100vw, 42vw"/></div>
-      <div className="ghostCloneTestCopy">
-        <p>PEOPLE WHO CHOSE GHOST</p>
-        <h3>{ghostTestimonials[0][1]}</h3>
-        <h5>{ghostTestimonials[0][0]}</h5>
-        <span>01 / 03</span>
-      </div>
-    </section>
+    <GhostTraining/>
 
-    <motion.section ref={perfectRef} className="ghostClonePerfect" aria-label="Choose your perfect Ghost">
+    <motion.section ref={perfectRef} data-scroll-reveal className="ghostClonePerfect" aria-label="Choose your perfect Ghost"
+      initial={reducedMotion ? false : { opacity: 0 }} whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: .03 }} transition={{ duration: reducedMotion ? 0 : .7 }}>
       <div className="ghostClonePerfectPin">
-      <motion.div className="ghostClonePerfectBgWrap" style={{y:perfectBgY}}>
-        <Image className="ghostClonePerfectBg" src="/images/choose-perfect-specialist.png" alt="" fill sizes="100vw" unoptimized/>
+      <motion.div className="ghostClonePerfectBgWrap" style={reducedMotion ? undefined : {y:perfectBgY}}>
+        <Image className="ghostClonePerfectBg" src="/images/immortal-offering-section.webp" alt="" fill sizes="100vw" unoptimized/>
+        <motion.div className="ghostClonePerfectShade" aria-hidden="true" style={{ opacity: reducedMotion ? 0 : perfectShadeOpacity }}/>
       </motion.div>
       <div className="ghostClonePerfectWords" aria-hidden="true">
-        <motion.div style={{x:perfectLeftX,scale:perfectWordScale}}><h2>Choose your</h2></motion.div>
-        <motion.div style={{x:perfectRightX,scale:perfectWordScale}}><h2>perfect specialist</h2></motion.div>
+        <motion.div style={reducedMotion ? undefined : {x:perfectLeftX,scale:perfectWordScale}}><h2>Choose your</h2></motion.div>
+        <motion.div style={reducedMotion ? undefined : {x:perfectRightX,scale:perfectWordScale}}><h2>perfect specialist</h2></motion.div>
       </div>
-      <motion.div className="ghostClonePerfectCard" style={{y:perfectCardY}}>
+      <motion.div className="ghostClonePerfectCard" style={reducedMotion ? undefined : {y:perfectCardY}}>
         <h6>See how it works</h6>
         <h3>Try Ghost free for 30 days</h3>
         <img src="/images/immortal-mm.svg" alt="" aria-hidden="true"/>
         <div className="ghostClonePerfectFeatures">
-          <h5>Changed your mind? Switch the brief</h5>
-          <h5>30-day intelligence guarantee</h5>
-          <h5>Full context and clear next steps</h5>
+          <h5>Access to all six Immortal specialists</h5>
+          <h5>24/7 AI-powered cyber protection</h5>
+          <h5>No credit card required</h5>
         </div>
         <a className="btn lightBtn ghostClonePerfectButton" href={consoleUrl}>Explore Ghost</a>
+        <Link className="ghostClonePricingButton" href="/pricing">View price lists</Link>
       </motion.div>
       </div>
     </motion.section>
