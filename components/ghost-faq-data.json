@@ -1,0 +1,38 @@
+[
+  {
+    "question": "What is Ghost: AI Intelligence Specialist?",
+    "answer": "Ghost is your vigilant cybersecurity companion, always on the lookout to spot and understand threats as they happen. It continuously scans for suspicious activity across the globe - including the dark web - and zeroes in on weaknesses unique to your organization. With Ghost, you get real-time insights and responses, helping you stay a step ahead of potential risks without lifting a finger."
+  },
+  {
+    "question": "How does Ghost differentiate from other AI-driven security solutions?",
+    "answer": "Unlike many AI systems that mainly automate security tasks or watch over devices, Ghost takes a broader view. It keeps you informed every day with clear, focused updates about the latest threats that matter most to your industry. It also keeps a close eye on hidden corners of the internet, like the dark web, to spot any risks before they reach you. Plus, Ghost looks beyond your own systems to assess the safety of your partners and suppliers, helping you block risks that might come from outside your walls."
+  },
+  {
+    "question": "Can Ghost autonomously respond to detected threats?",
+    "answer": "Yes, Ghost is equipped with autonomous response capabilities. Upon detecting a threat, it can initiate predefined actions such as isolating affected systems, alerting security personnel, and implementing countermeasures to mitigate potential damage."
+  },
+  {
+    "question": "How does Ghost assist in vulnerability management?",
+    "answer": "Ghost continuously scans for newly disclosed vulnerabilities and cross-references them with your system configurations. It prioritises vulnerabilities based on exploitability and potential impact, providing actionable recommendations to address them promptly."
+  },
+  {
+    "question": "Is Ghost suitable for organisations without a dedicated SOC?",
+    "answer": "Definitely. Ghost is built to step in wherever it’s needed - whether you have a full security team or not. Its easy-to-use design and smart automation help organisations with limited resources stay on top of threats and keep their security strong without extra hassle."
+  },
+  {
+    "question": "How does Ghost ensure the accuracy of its threat intelligence?",
+    "answer": "Ghost leverages a combination of machine learning algorithms and human expertise. It continuously learns from new data, adapts to emerging threats, and undergoes regular evaluations by cybersecurity professionals to maintain high accuracy in threat detection and analysis."
+  },
+  {
+    "question": "What integration options are available with Ghost?",
+    "answer": "Ghost works smoothly with a wide range of security tools—like SIEMs, endpoint protection, and incident response platforms—helping to keep everything connected and informed. When it comes to making those connections happen, Link, our AI Security Engineer, takes charge. Link discovers your assets, deploys endpoint agents, integrates Ghost into your existing systems, reviews security configurations, and automates fixes. Together, Ghost and Link make sure your defenses are tightly woven and ready before attackers can exploit any gaps."
+  },
+  {
+    "question": "How does Ghost handle data privacy and compliance?",
+    "answer": "Ghost is built with a strong emphasis on data privacy and compliance. It follows global standards such as GDPR and ISO 27001, ensuring that all data processing activities are transparent and that user data is handled with the utmost care."
+  },
+  {
+    "question": "What support and training resources are available for Ghost users?",
+    "answer": "Each Immortal delivers their own training and certification allowing teams to enhance their skills and knowledge every day."
+  }
+]

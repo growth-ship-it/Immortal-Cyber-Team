@@ -1,0 +1,22 @@
+.story { position: relative; height: 320svh; background: #070d11; color: #fcf6ec; }
+.stage { position: sticky; top: 0; height: 100svh; min-height: 560px; overflow: hidden; isolation: isolate; }
+.video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.shade { position: absolute; inset: 0; background: #27221a52; }
+.first, .second { position: absolute; top: 50%; translate: 0 -50%; width: min(385px, 32vw); display: flex; gap: 16px; align-items: flex-start; }
+.first { left: var(--content-inset); }
+.second { right: var(--content-inset); }
+.number { flex: 0 0 48px; display: grid; place-items: center; height: 48px; border: 1px solid #fcf6ec66; border-radius: 50%; font-size: 12px; }
+.story h2 { margin: 0 0 16px; font: inherit; font-size: clamp(28px, 3vw, 42px); line-height: 1.05; letter-spacing: -.025em; }
+.story p { margin: 0; font-size: 18px; line-height: 1.5; }
+@media (max-width: 800px) {
+  .first, .second { width: calc(100% - 2 * var(--content-inset)); max-width: 430px; gap: 12px; }
+  .shade { background: #070d117a; }
+  .story h2 { font-size: 30px; }
+  .number { flex-basis: 38px; height: 38px; }
+  .stage { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story { height: auto; }
+  .stage { position: relative; height: auto; min-height: 100svh; display: grid; gap: 40px; align-content: center; padding: 100px 20px; }
+  .first, .second { position: relative; top: auto; left: auto; right: auto; translate: none; width: 100%; max-width: 500px; margin-inline: auto; }
+}

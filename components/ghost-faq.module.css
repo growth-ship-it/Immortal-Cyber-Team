@@ -1,0 +1,38 @@
+.section { padding: 50px var(--content-inset) 100px; background: #070d11; color: #fff; scroll-margin-top: 90px; }
+.inner { max-width: 1440px; margin-inline: auto; }
+.heading { margin-bottom: 56px; }
+.heading > span { font-size: 24px; line-height: 29px; }
+.section .heading h2 { font-size: 48px; line-height: 1.2; font-weight: 500; margin: 0; letter-spacing: 0; }
+.item { position: relative; isolation: isolate; border-top: 1px solid #fff; padding: 0 10px; }
+.item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #1d252d;
+  pointer-events: none;
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1);
+}
+.item[data-entry="bottom"]::before { transform-origin: center bottom; }
+.item:hover::before, .item:focus-within::before { transform: scaleY(1); }
+.item:last-child { border-bottom: 1px solid #fff; }
+.item h3 { margin: 0; }
+.item button { display: grid; grid-template-columns: 16% minmax(0, 1fr) 24px; gap: 28px; width: 100%; border: 0; padding: 24px 0; background: transparent; color: #fff; text-align: left; cursor: pointer; font: inherit; font-size: 28px; line-height: 1.2; }
+.item button:hover, .item button[aria-expanded="true"] { color: #fff; }
+.item button:focus-visible { outline: 2px solid var(--yellow, #fff06a); outline-offset: 4px; }
+.arrow { justify-self: end; width: 18px; height: 24px; transition: transform .3s; }
+.item button[aria-expanded="true"] .arrow { transform: rotate(180deg); }
+.section .item button, .section .item button > span { font-weight: 400 !important; }
+.answer { overflow: hidden; }
+.section .answer p { max-width: 1008px; margin: 0 52px 0 calc(16% + 28px); padding: 6px 0 36px; font-size: 16px; line-height: 1.5; font-weight: 400 !important; }
+@media (max-width: 800px) {
+  .heading { grid-template-columns: 1fr; gap: 14px; margin-bottom: 32px; }
+  .section .heading h2 { font-size: 34px; }
+  .heading > span { font-size: 18px; }
+  .item { padding-inline: 0; }
+  .item button { grid-template-columns: 30px minmax(0, 1fr) 20px; gap: 12px; font-size: 20px; padding-block: 22px; }
+  .section .answer p { margin-left: 42px; margin-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .arrow, .item::before { transition: none; } }

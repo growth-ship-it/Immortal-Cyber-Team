@@ -820,3 +820,6 @@ h1,h2,h3,h4,h5,h6,b,strong,th{font-weight:500}
   .footerLine{margin-top:50px}
   .footerBottom{align-items:flex-start;flex-direction:column}
 }
+
+/* Clip homepage decoration without creating a scroll container for sticky workflows. */
+main.homePage { overflow: clip; }

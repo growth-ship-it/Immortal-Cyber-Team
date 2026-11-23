@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import "./chat-input.css";
 
 type SpeechResult = {
   readonly isFinal: boolean;
@@ -52,7 +53,7 @@ const ghostPrompts = [
   "Generate supplier remediation reports.",
 ];
 
-export function GhostPromptForm({ action }: { action: string }) {
+export function GhostPromptForm({ action, agentName = "Ghost" }: { action: string; agentName?: string }) {
   const inputId = useId();
   const [typedPrompt, setTypedPrompt] = useState("");
   const [promptValue, setPromptValue] = useState("");
@@ -61,6 +62,10 @@ export function GhostPromptForm({ action }: { action: string }) {
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   useEffect(() => {
+    if (agentName !== "Ghost") {
+      setTypedPrompt(`Chat with ${agentName}`);
+      return;
+    }
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let timeout: ReturnType<typeof setTimeout> | undefined;
     let promptIndex = 0;
@@ -121,7 +126,7 @@ export function GhostPromptForm({ action }: { action: string }) {
       clearTimer();
       reducedMotion.removeEventListener("change", configure);
     };
-  }, []);
+  }, [agentName]);
 
   useEffect(() => () => {
     const recognition = recognitionRef.current;
@@ -210,7 +215,7 @@ export function GhostPromptForm({ action }: { action: string }) {
   };
 
   return <div className="ghostCloneHeroPromptGroup">
-    <label htmlFor={inputId}>Chat with Ghost</label>
+    <label htmlFor={inputId}>Chat with {agentName}</label>
     <form className="ghostCloneHeroPrompt" action={action} method="get">
       <input
         id={inputId}
@@ -218,16 +223,16 @@ export function GhostPromptForm({ action }: { action: string }) {
         type="text"
         value={promptValue}
         onChange={(event) => setPromptValue(event.target.value)}
-        placeholder={typedPrompt}
-        aria-label="Chat with Ghost"
+        placeholder={typedPrompt || `Chat with ${agentName}`}
+        aria-label={`Chat with ${agentName}`}
         autoComplete="off"
       />
       <button
         className={isListening ? "ghostClonePromptMic isListening" : "ghostClonePromptMic"}
         type="button"
-        aria-label={isListening ? "Stop listening" : "Start voice input for Ghost"}
+        aria-label={isListening ? "Stop listening" : `Start voice input for ${agentName}`}
         aria-pressed={isListening}
-        title={isListening ? "Stop listening" : "Speak to Ghost"}
+        title={isListening ? "Stop listening" : `Speak to ${agentName}`}
         onClick={toggleVoiceInput}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="3" width="7" height="12" rx="3.5"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg>
